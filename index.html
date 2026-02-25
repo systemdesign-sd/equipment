@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>設備台帳 | 株式会社システムデザイン</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:        #f5f2ec;
+  --bg-card:   #ffffff;
+  --bg-panel:  #f0ece4;
+  --border:    #ddd8ce;
+  --border-md: #c8c2b6;
+  --text-1:    #1a1714;
+  --text-2:    #5a5450;
+  --text-3:    #9a948c;
+  --accent:    #1a1714;
+  --accent2:   #d94f3a;
+  --accent3:   #4a7c6f;
+  --gold:      #c9993a;
+  --white:     #ffffff;
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+  --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text-1);
+  min-height: 100vh;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: var(--white);
+  border-bottom: 2px solid var(--border);
+  height: 58px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+.logo-wrap { display:flex; align-items:center; gap:10px; }
+.logo-mark { width:30px; height:30px; flex-shrink:0; }
+.logo-company { font-size:13px; font-weight:900; color:var(--text-1); letter-spacing:0.02em; line-height:1.2; }
+.logo-sub { font-size:9px; font-weight:400; color:var(--text-3); letter-spacing:0.04em; }
+.hd { width:1px; height:26px; background:var(--border); margin:0 18px; }
+.system-title { font-size:14px; font-weight:700; color:var(--text-1); letter-spacing:0.04em; }
+.system-sub { font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); letter-spacing:0.15em; text-transform:uppercase; margin-top:1px; }
+.header-spacer { flex:1; }
+.online-pill {
+  display:flex; align-items:center; gap:5px;
+  font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3); letter-spacing:0.12em;
+  padding:4px 10px; border:1px solid var(--border); border-radius:20px;
+  margin-right:12px;
+}
+.online-dot { width:5px;height:5px;background:#3d9970;border-radius:50%;box-shadow:0 0 5px #3d9970;animation:blink 2.5s infinite; }
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* ===== LAYOUT: 2カラム ===== */
+.layout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 0;
+  min-height: calc(100vh - 58px);
+}
+
+/* ===== LEFT: 一覧 ===== */
+.pane-list {
+  padding: 20px;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+.toolbar-label {
+  font-family:'DM Mono',monospace; font-size:9px; color:var(--text-3);
+  letter-spacing:0.2em; text-transform:uppercase;
+  padding-right:10px; border-right:1px solid var(--border); margin-right:2px; white-space:nowrap;
+}
+.tb-select {
+  padding:6px 24px 6px 10px;
+  background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%239a948c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;
+  border:1px solid var(--border); border-radius:5px;
+  font-size:12px; font-family:'Noto Sans JP',sans-serif; color:var(--text-1);
+  appearance:none; cursor:pointer; transition:border-color 0.15s;
+}
+.tb-select:focus{outline:none;border-color:var(--accent);}
+.tb-search {
+  flex:1; min-width:140px; max-width:220px;
+  padding:6px 10px;
+  background:var(--white); border:1px solid var(--border); border-radius:5px;
+  font-size:12px; font-family:'Noto Sans JP',sans-serif; color:var(--text-1);
+  transition:border-color 0.15s;
+}
+.tb-search::placeholder{color:var(--text-3);}
+.tb-search:focus{outline:none;border-color:var(--accent);background:var(--white);}
+.count-chip {
+  font-family:'DM Mono',monospace; font-size:11px; color:var(--text-2);
+  padding:5px 10px; background:var(--bg-panel); border:1px solid var(--border); border-radius:5px;
+  margin-left:auto; white-space:nowrap;
+}
+.count-chip b{color:var(--text-1);}
+
+/* ===== GRID ===== */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 12px;
+}
+
+/* ===== CARD ===== */
+.card {
+  background:var(--bg-card); border:1px solid var(--border); border-radius:8px;
+  overflow:hidden; cursor:pointer; transition:all 0.2s; box-shadow:var(--shadow-sm);
+  position:relative;
+}
+.card:hover { border-color:var(--border-md); transform:translateY(-2px); box-shadow:var(--shadow-md); }
+.card.selected { border-color:var(--accent); box-shadow:0 0 0 2px rgba(26,23,20,0.12); }
+.card-top { height:2px; background:var(--accent); transform:scaleX(0); transform-origin:left; transition:transform 0.2s; }
+.card:hover .card-top, .card.selected .card-top { transform:scaleX(1); }
+.card-photo {
+  width:100%; height:140px; background:var(--bg-panel);
+  border-bottom:1px solid var(--border);
+  display:flex; align-items:center; justify-content:center;
+  font-size:44px; overflow:hidden;
+}
+.card-photo img{width:100%;height:100%;object-fit:cover;}
+.card-body{padding:11px 13px 10px;}
+.card-row1{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
+.card-name{font-size:13px;font-weight:700;color:var(--text-1);line-height:1.4;flex:1;padding-right:6px;}
+.badge-ai{font-family:'DM Mono',monospace;font-size:8px;padding:2px 5px;background:rgba(217,79,58,0.08);border:1px solid rgba(217,79,58,0.2);border-radius:3px;color:var(--accent2);letter-spacing:0.08em;white-space:nowrap;flex-shrink:0;}
+.card-maker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:8px;}
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
+.tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;}
+.tag-bank{background:rgba(74,124,111,0.1);border:1px solid rgba(74,124,111,0.2);color:var(--accent3);}
+.tag-branch{background:var(--bg-panel);border:1px solid var(--border);color:var(--text-2);}
+.card-desc{font-size:11px;color:var(--text-2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.card-footer{padding:8px 13px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-date{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);}
+.card-open{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);background:none;border:none;cursor:pointer;letter-spacing:0.1em;transition:color 0.15s;padding:0;}
+.card:hover .card-open, .card.selected .card-open{color:var(--text-1);}
+
+/* ===== RIGHT PANE ===== */
+.pane-right {
+  background: var(--white);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: 58px;
+  height: calc(100vh - 58px);
+  overflow-y: auto;
+}
+
+/* タブ */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.tab-btn {
+  flex: 1;
+  padding: 12px 0;
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Noto Sans JP', sans-serif;
+  letter-spacing: 0.04em;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text-3);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: all 0.15s;
+}
+.tab-btn.active { color: var(--text-1); border-bottom-color: var(--accent); }
+.tab-btn:hover:not(.active) { color: var(--text-2); background: var(--bg); }
+
+.tab-content { display: none; flex: 1; overflow-y: auto; }
+.tab-content.active { display: block; }
+
+/* ===== 詳細パネル ===== */
+.det-photo {
+  width:100%; height:200px; background:var(--bg-panel);
+  display:flex;align-items:center;justify-content:center;font-size:60px;
+  overflow:hidden;position:relative;border-bottom:1px solid var(--border);
+}
+.det-photo img{width:100%;height:100%;object-fit:cover;}
+.det-id-strip{
+  position:absolute;bottom:0;left:0;right:0;
+  padding:5px 14px;background:rgba(245,242,236,0.95);
+  display:flex;justify-content:space-between;
+  font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.1em;
+  border-top:1px solid var(--border);
+}
+.det-body{padding:16px 18px;}
+.det-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
+.det-name{font-size:18px;font-weight:900;color:var(--text-1);margin-bottom:4px;line-height:1.3;}
+.det-maker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:14px;}
+.det-sec{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:7px;}
+.det-desc{font-size:12px;color:var(--text-2);line-height:1.85;}
+.det-ai{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:4px;}
+
+.det-empty {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  height: 100%; padding: 40px 20px; text-align: center; color: var(--text-3);
+}
+.det-empty-icon { font-size: 40px; margin-bottom: 12px; opacity: 0.3; }
+.det-empty-text { font-size: 13px; color: var(--text-2); margin-bottom: 6px; }
+.det-empty-sub { font-size: 11px; }
+
+/* ===== 登録フォーム ===== */
+.form-wrap { padding: 16px 18px; }
+.fsec { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+.fsec:last-of-type { border-bottom: none; }
+.fsec-title {
+  font-family: 'DM Mono', monospace; font-size: 9px; color: var(--text-3);
+  letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 10px;
+}
+.frow { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fg { margin-bottom: 8px; }
+.fg:last-child { margin-bottom: 0; }
+.fl { display:block; font-size:11px; font-weight:500; color:var(--text-2); margin-bottom:3px; }
+.fl .req { color:var(--accent2); margin-left:2px; }
+.fi, .fta {
+  width:100%; padding:8px 10px;
+  background:var(--bg); border:1px solid var(--border); border-radius:5px;
+  font-size:12px; font-family:'Noto Sans JP',sans-serif; color:var(--text-1);
+  transition:border-color 0.15s;
+}
+.fi::placeholder, .fta::placeholder { color:var(--text-3); }
+.fi:focus, .fta:focus { outline:none; border-color:var(--accent); background:var(--white); }
+.fta { resize:vertical; min-height:80px; line-height:1.7; }
+
+.upload-zone {
+  border:1.5px dashed var(--border-md); border-radius:6px; padding:16px;
+  text-align:center; cursor:pointer; position:relative;
+  background:var(--bg); transition:all 0.15s;
+}
+.upload-zone:hover{border-color:var(--accent);background:var(--bg-panel);}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.upload-zone-icon{font-size:20px;margin-bottom:4px;}
+.upload-zone-text{font-size:11px;color:var(--text-2);}
+.upload-zone-sub{font-size:10px;color:var(--text-3);margin-top:2px;}
+.upload-preview{width:100%;max-height:120px;object-fit:cover;border-radius:5px;margin-top:8px;display:none;}
+
+.ai-btn {
+  display:inline-flex; align-items:center; gap:5px; margin-top:6px;
+  padding:6px 12px;
+  background:rgba(217,79,58,0.06); border:1px solid rgba(217,79,58,0.18); border-radius:5px;
+  font-size:11px; font-family:'DM Mono',monospace; color:var(--accent2);
+  cursor:pointer; letter-spacing:0.06em; transition:all 0.15s;
+}
+.ai-btn:hover{background:rgba(217,79,58,0.1);}
+.ai-loading{display:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-top:5px;}
+
+.btn-submit {
+  width:100%; padding:11px;
+  background:var(--accent); color:var(--white);
+  border:none; border-radius:6px;
+  font-size:13px; font-family:'Noto Sans JP',sans-serif; font-weight:700; letter-spacing:0.06em;
+  cursor:pointer; margin-top:4px; transition:background 0.15s;
+}
+.btn-submit:hover{background:#2d2a26;}
+
+.success-msg {
+  display:none; padding:10px 14px; margin-bottom:12px;
+  background:rgba(74,124,111,0.1); border:1px solid rgba(74,124,111,0.25); border-radius:6px;
+  font-size:12px; color:var(--accent3); font-weight:500;
+}
+
+/* ===== EMPTY ===== */
+.empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
+.empty-icon{font-size:40px;margin-bottom:12px;opacity:.4;}
+.empty-text{font-size:13px;margin-bottom:5px;color:var(--text-2);}
+.empty-sub{font-size:11px;}
+
+/* ===== PDF BUTTON ===== */
+.pdf-bar {
+  padding: 10px 20px;
+  border-top: 1px solid var(--border);
+  background: var(--white);
+  flex-shrink: 0;
+}
+.btn-pdf {
+  width:100%; padding:8px;
+  background:transparent; border:1px solid var(--border-md); border-radius:5px;
+  font-size:11px; font-family:'DM Mono',monospace; color:var(--text-2); letter-spacing:0.08em;
+  cursor:pointer; transition:all 0.15s; display:flex; align-items:center; justify-content:center; gap:5px;
+}
+.btn-pdf:hover{border-color:var(--gold);color:var(--gold);}
+
+/* ===== PRINT ===== */
+@media print {
+  header, .pane-right, .toolbar { display:none !important; }
+  .layout { display:block; }
+  body { background:white; }
+  .grid { grid-template-columns: repeat(3, 1fr); }
+  .card { break-inside:avoid; box-shadow:none; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="logo-wrap">
+    <svg class="logo-mark" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 25 L13 5" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M16 5 L16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M16 5 Q26 5 26 15 Q26 25 16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div>
+      <div class="logo-company">株式会社 システムデザイン</div>
+      <div class="logo-sub">SYSTEM DESIGN Co., Ltd.</div>
+    </div>
+  </div>
+  <div class="hd"></div>
+  <div>
+    <div class="system-title">金融機関 設備台帳</div>
+    <div class="system-sub">Financial Equipment Registry</div>
+  </div>
+  <div class="header-spacer"></div>
+  <div class="online-pill">
+    <div class="online-dot"></div>
+    ONLINE
+  </div>
+</header>
+
+<!-- 2カラムレイアウト -->
+<div class="layout">
+
+  <!-- LEFT: 一覧 -->
+  <div class="pane-list">
+    <div class="toolbar">
+      <span class="toolbar-label">FILTER</span>
+      <select class="tb-select" id="filterBank" onchange="applyFilters()">
+        <option value="">すべての金融機関</option>
+      </select>
+      <select class="tb-select" id="filterBranch" onchange="applyFilters()">
+        <option value="">すべての支店</option>
+      </select>
+      <input class="tb-search" type="text" id="filterSearch" placeholder="機器名で検索..." oninput="applyFilters()">
+      <div class="count-chip" id="countChip">— 件</div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- RIGHT: 詳細 + 登録 -->
+  <div class="pane-right">
+    <div class="tabs">
+      <button class="tab-btn active" id="tabDetail" onclick="switchTab('detail')">詳細</button>
+      <button class="tab-btn" id="tabReg" onclick="switchTab('reg')">＋ 新規登録</button>
+    </div>
+
+    <!-- 詳細タブ -->
+    <div class="tab-content active" id="contentDetail">
+      <div id="detEmpty" class="det-empty">
+        <div class="det-empty-icon">👆</div>
+        <div class="det-empty-text">左の機器をクリック</div>
+        <div class="det-empty-sub">詳細が表示されます</div>
+      </div>
+      <div id="detContent" style="display:none;">
+        <div class="det-photo" id="detPhoto"></div>
+        <div class="det-body">
+          <div class="det-tags" id="detTags"></div>
+          <div class="det-name" id="detName"></div>
+          <div class="det-maker" id="detMaker"></div>
+          <div id="detAiNote"></div>
+          <div class="det-sec">機器解説</div>
+          <div class="det-desc" id="detDesc"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 登録タブ -->
+    <div class="tab-content" id="contentReg">
+      <div class="form-wrap">
+        <div class="success-msg" id="successMsg">✓ 登録しました！</div>
+
+        <div class="fsec">
+          <div class="fsec-title">01 — 写真</div>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" id="photoInput" onchange="prevPhoto(this)">
+            <div id="upIcon" class="upload-zone-icon">📷</div>
+            <div id="upText" class="upload-zone-text">クリックして写真をアップロード</div>
+            <div id="upSub" class="upload-zone-sub">JPG / PNG / HEIC</div>
+            <img id="upPreview" class="upload-preview">
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">02 — 機器情報</div>
+          <div class="frow">
+            <div class="fg">
+              <label class="fl">機器名称<span class="req">*</span></label>
+              <input class="fi" id="iName" placeholder="テラーマシン">
+            </div>
+            <div class="fg">
+              <label class="fl">メーカー</label>
+              <input class="fi" id="iMaker" placeholder="グローリー㈱">
+            </div>
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">03 — 設置先</div>
+          <div class="frow">
+            <div class="fg">
+              <label class="fl">金融機関<span class="req">*</span></label>
+              <input class="fi" id="iBank" placeholder="きらぼし銀行">
+            </div>
+            <div class="fg">
+              <label class="fl">支店名</label>
+              <input class="fi" id="iBranch" placeholder="豊洲支店">
+            </div>
+          </div>
+        </div>
+
+        <div class="fsec">
+          <div class="fsec-title">04 — 機器解説</div>
+          <textarea class="fta" id="iDesc" placeholder="用途・機能・設置時の注意点など..."></textarea>
+          <button class="ai-btn" id="aiBtn" onclick="genAI()">✦ AIで解説文を自動生成</button>
+          <div class="ai-loading" id="aiLoading">✦ 生成中...</div>
+        </div>
+
+        <button class="btn-submit" onclick="registerEq()">登 録 す る</button>
+      </div>
+    </div>
+
+    <div class="pdf-bar">
+      <button class="btn-pdf" onclick="window.print()">🖨 PDF出力（印刷）</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let db = [
+  { id:1, name:"テラーマシン（現金処理機）", maker:"グローリー株式会社", bank:"きらぼし銀行", branch:"豊洲支店", desc:"窓口業務を効率化する現金処理機。紙幣・硬貨の入出金・計数・収納を自動化。テラーが直接操作し顧客への現金支払い・受け取りを迅速に行う。設置には専用配線スペース（100V/15A）と床補強が必要。重量約180kg。", ai:true, photo:null, emoji:"🏧", date:"2025-10-12" },
+  { id:2, name:"ATM（現金自動預払機）", maker:"沖電気工業（OKI）", bank:"西武信用金庫", branch:"池袋支店", desc:"顧客が自己操作で現金の入出金・残高照会・振込を行う端末。ロビーまたは専用コーナーに設置。24時間稼働対応モデルあり。設置スペース：W900×D800×H1800mm程度。専用回線・セキュリティ配線が必要。床荷重500kg/m²以上推奨。", ai:true, photo:null, emoji:"💳", date:"2025-11-03" },
+  { id:3, name:"オープン出納機", maker:"日立オムロンターミナルソリューションズ", bank:"昭和信用金庫", branch:"荻窪支店", desc:"オープンカウンター形式の窓口に設置する現金管理機。カウンター上に配置しオープンバンキングスタイルに対応。紙幣収納と計数機能を持つ。カウンター埋め込みタイプと卓上タイプがある。", ai:true, photo:null, emoji:"🗃️", date:"2025-11-20" },
+  { id:4, name:"番号発券機", maker:"ウエスタン・デジタル", bank:"朝日信用金庫", branch:"篠崎支店", desc:"来店顧客に受付番号を発行する機器。ロビーエントランス付近に設置。業務種別を選択後に番号票を発行し呼び出しシステムと連動。壁付けタイプ・スタンドタイプがある。電源：100V/2A。", ai:false, photo:null, emoji:"🎫", date:"2025-12-01" },
+  { id:5, name:"通帳・カード発行機", maker:"富士通フロンテック", bank:"きらぼし銀行", branch:"新宿支店", desc:"口座開設時や通帳再発行時に使用する機器。通帳の印字・発行とキャッシュカードの発行を一体化した多機能端末。バックヤードに設置することが多く行員専用操作。専用消耗品の在庫管理が必要。", ai:true, photo:null, emoji:"📋", date:"2025-12-15" },
+  { id:6, name:"電子サイン端末", maker:"ワコム", bank:"西武信用金庫", branch:"所沢支店", desc:"紙の申込書に代わる電子署名用タブレット端末。窓口カウンターに設置し顧客がスタイラスペンで署名。ペーパーレス化に対応し書類の電子保管が可能。カウンターへの設置固定方法の選定が必要。", ai:false, photo:null, emoji:"✍️", date:"2026-01-08" }
+];
+
+let photoURL = null;
+let aiUsed = false;
+
+// ===== TAB =====
+function switchTab(tab) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  document.getElementById('tab' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+  document.getElementById('content' + tab.charAt(0).toUpperCase() + tab.slice(1)).classList.add('active');
+}
+
+// ===== RENDER =====
+function renderGrid(data) {
+  const g = document.getElementById('grid');
+  document.getElementById('countChip').innerHTML = `<b>${data.length}</b> / ${db.length} 件`;
+  if (!data.length) {
+    g.innerHTML = `<div class="empty"><div class="empty-icon">🏦</div><div class="empty-text">該当する機器がありません</div><div class="empty-sub">フィルターを変更するか新規登録してください</div></div>`;
+    return;
+  }
+  g.innerHTML = data.map(eq => `
+    <div class="card" id="card-${eq.id}" onclick="selectCard(${eq.id})">
+      <div class="card-top"></div>
+      <div class="card-photo">${eq.photo ? `<img src="${eq.photo}">` : eq.emoji}</div>
+      <div class="card-body">
+        <div class="card-row1">
+          <div class="card-name">${eq.name}</div>
+          ${eq.ai ? `<span class="badge-ai">AI</span>` : ''}
+        </div>
+        <div class="card-maker">${eq.maker || '—'}</div>
+        <div class="tags">
+          <span class="tag tag-bank">${eq.bank}</span>
+          ${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}
+        </div>
+        <div class="card-desc">${eq.desc || '解説未入力'}</div>
+      </div>
+      <div class="card-footer">
+        <span class="card-date">登録 ${eq.date}</span>
+        <span class="card-open">詳細 →</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== SELECT CARD =====
+function selectCard(id) {
+  const eq = db.find(e => e.id === id);
+  if (!eq) return;
+
+  // ハイライト
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  const cardEl = document.getElementById('card-' + id);
+  if (cardEl) cardEl.classList.add('selected');
+
+  // 詳細表示
+  document.getElementById('detEmpty').style.display = 'none';
+  document.getElementById('detContent').style.display = 'block';
+
+  document.getElementById('detPhoto').innerHTML = `
+    ${eq.photo ? `<img src="${eq.photo}">` : `<span style="font-size:56px">${eq.emoji}</span>`}
+    <div class="det-id-strip"><span>ID-${String(eq.id).padStart(4,'0')}</span><span>${eq.date}</span></div>
+  `;
+  document.getElementById('detTags').innerHTML = `
+    <span class="tag tag-bank">${eq.bank}</span>
+    ${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}
+  `;
+  document.getElementById('detName').textContent = eq.name;
+  document.getElementById('detMaker').textContent = eq.maker || '';
+  document.getElementById('detAiNote').innerHTML = eq.ai ? `<div class="det-ai">✦ AI自動生成解説</div>` : '';
+  document.getElementById('detDesc').textContent = eq.desc || '解説未入力';
+
+  // 詳細タブに切り替え
+  switchTab('detail');
+}
+
+// ===== FILTERS =====
+function buildFilters() {
+  const banks = [...new Set(db.map(e => e.bank))].sort();
+  const bs = document.getElementById('filterBank');
+  bs.innerHTML = '<option value="">すべての金融機関</option>';
+  banks.forEach(b => { const o = document.createElement('option'); o.value = b; o.textContent = b; bs.appendChild(o); });
+}
+
+function applyFilters() {
+  const bank = document.getElementById('filterBank').value;
+  const brs = document.getElementById('filterBranch');
+  const curBr = brs.value;
+  const branches = [...new Set(db.filter(e => !bank || e.bank === bank).map(e => e.branch).filter(Boolean))].sort();
+  brs.innerHTML = '<option value="">すべての支店</option>';
+  branches.forEach(b => { const o = document.createElement('option'); o.value = b; o.textContent = b; if (b === curBr) o.selected = true; brs.appendChild(o); });
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+  const branch = brs.value;
+  renderGrid(db.filter(e =>
+    (!bank || e.bank === bank) && (!branch || e.branch === branch) &&
+    (!search || e.name.toLowerCase().includes(search) || (e.desc || '').toLowerCase().includes(search))
+  ));
+}
+
+// ===== PHOTO =====
+function prevPhoto(input) {
+  if (input.files && input.files[0]) {
+    const r = new FileReader();
+    r.onload = e => {
+      photoURL = e.target.result;
+      document.getElementById('upPreview').src = photoURL;
+      document.getElementById('upPreview').style.display = 'block';
+      ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = 'none');
+    };
+    r.readAsDataURL(input.files[0]);
+  }
+}
+
+// ===== AI =====
+async function genAI() {
+  const name = document.getElementById('iName').value.trim();
+  const maker = document.getElementById('iMaker').value.trim();
+  const bank = document.getElementById('iBank').value.trim();
+  if (!name) { alert('機器名称を入力してください。'); return; }
+  document.getElementById('aiLoading').style.display = 'block';
+  document.getElementById('aiBtn').style.display = 'none';
+  try {
+    const prompt = `金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker ? `メーカー：${maker}。` : ''}${bank ? `設置先：${bank}。` : ''}\n含める内容：①用途・機能 ②設置場所（ロビー/窓口/バックヤード等） ③内装工事時の注意点（電源・スペース・重量・床補強等）\n解説文のみ返答してください。`;
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: prompt }] })
+    });
+    const data = await res.json();
+    document.getElementById('iDesc').value = data.content?.find(c => c.type === 'text')?.text?.trim() || '';
+    aiUsed = true;
+  } catch(e) {
+    document.getElementById('iDesc').value = `${name}は金融機関の窓口業務に使用される機器です。設置の際は電源容量・設置スペース・重量について事前確認が必要です。`;
+  }
+  document.getElementById('aiLoading').style.display = 'none';
+}
+
+// ===== REGISTER =====
+function registerEq() {
+  const name = document.getElementById('iName').value.trim();
+  const bank = document.getElementById('iBank').value.trim();
+  if (!name || !bank) { alert('機器名称と金融機関は必須です。'); return; }
+  const newEq = {
+    id: Date.now(),
+    name, maker: document.getElementById('iMaker').value.trim(),
+    bank, branch: document.getElementById('iBranch').value.trim(),
+    desc: document.getElementById('iDesc').value.trim(),
+    ai: aiUsed, photo: photoURL, emoji: '📦',
+    date: new Date().toISOString().slice(0, 10)
+  };
+  db.unshift(newEq);
+
+  // フォームリセット
+  ['iName','iMaker','iBank','iBranch','iDesc'].forEach(i => document.getElementById(i).value = '');
+  document.getElementById('upPreview').style.display = 'none';
+  ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = '');
+  document.getElementById('aiBtn').style.display = '';
+  photoURL = null; aiUsed = false;
+
+  // 成功メッセージ
+  const msg = document.getElementById('successMsg');
+  msg.style.display = 'block';
+  setTimeout(() => { msg.style.display = 'none'; }, 3000);
+
+  buildFilters();
+  applyFilters();
+
+  // 新しいカードを選択して詳細表示
+  setTimeout(() => selectCard(newEq.id), 100);
+}
+
+// Init
+buildFilters();
+applyFilters();
+</script>
+</body>
+</html>
