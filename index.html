@@ -5,13 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>設備台帳 | 株式会社システムデザイン</title>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
 <style>
 :root {
-  --bg:#f5f2ec; --bg-card:#ffffff; --bg-panel:#f0ece4;
-  --border:#ddd8ce; --border-md:#c8c2b6;
-  --text-1:#1a1714; --text-2:#5a5450; --text-3:#9a948c;
-  --accent:#1a1714; --accent2:#d94f3a; --accent3:#4a7c6f;
-  --gold:#c9993a; --white:#ffffff;
+  --bg:#f5f2ec;--bg-card:#ffffff;--bg-panel:#f0ece4;
+  --border:#ddd8ce;--border-md:#c8c2b6;
+  --text-1:#1a1714;--text-2:#5a5450;--text-3:#9a948c;
+  --accent:#1a1714;--accent2:#d94f3a;--accent3:#4a7c6f;
+  --gold:#c9993a;--white:#ffffff;
   --shadow-sm:0 1px 4px rgba(0,0,0,0.06);
   --shadow-md:0 4px 20px rgba(0,0,0,0.08);
   --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
@@ -19,64 +20,29 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text-1);min-height:100vh;}
 
-/* ===== LOGIN SCREEN ===== */
-#loginScreen {
-  position:fixed; inset:0; z-index:9999;
-  background:var(--bg);
-  display:flex; align-items:center; justify-content:center;
-}
-.login-card {
-  background:var(--white);
-  border:1px solid var(--border);
-  border-radius:14px;
-  padding:40px 40px 36px;
-  width:340px;
-  box-shadow:var(--shadow-lg);
-  text-align:center;
-}
-.login-logo {
-  display:flex; align-items:center; justify-content:center; gap:10px;
-  margin-bottom:24px;
-}
-.login-logo-mark { width:36px; height:36px; }
-.login-company { font-size:14px; font-weight:900; color:var(--text-1); text-align:left; line-height:1.3; }
-.login-company-sub { font-size:9px; color:var(--text-3); letter-spacing:0.04em; }
-.login-divider { width:100%; height:1px; background:var(--border); margin-bottom:24px; }
-.login-title { font-size:16px; font-weight:700; color:var(--text-1); margin-bottom:6px; }
-.login-sub { font-size:11px; color:var(--text-3); margin-bottom:24px; letter-spacing:0.03em; }
-.login-label { display:block; font-size:11px; font-weight:500; color:var(--text-2); text-align:left; margin-bottom:5px; }
-.login-input {
-  width:100%; padding:10px 14px;
-  background:var(--bg); border:1px solid var(--border); border-radius:6px;
-  font-size:14px; font-family:'Noto Sans JP',sans-serif; color:var(--text-1);
-  letter-spacing:0.1em;
-  transition:border-color 0.15s; margin-bottom:16px;
-}
-.login-input:focus { outline:none; border-color:var(--accent); background:var(--white); }
-.login-btn {
-  width:100%; padding:12px;
-  background:var(--accent); color:var(--white);
-  border:none; border-radius:7px;
-  font-size:13px; font-family:'Noto Sans JP',sans-serif; font-weight:700; letter-spacing:0.08em;
-  cursor:pointer; transition:background 0.15s; margin-bottom:12px;
-}
-.login-btn:hover { background:#2d2a26; }
-.login-error {
-  display:none; font-size:11px; color:var(--accent2);
-  padding:8px 12px; background:rgba(217,79,58,0.06);
-  border:1px solid rgba(217,79,58,0.2); border-radius:5px;
-}
-.login-note { font-size:10px; color:var(--text-3); margin-top:16px; line-height:1.6; }
+/* LOGIN */
+#loginScreen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;}
+.login-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:44px 40px 36px;width:360px;box-shadow:var(--shadow-lg);text-align:center;}
+.login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;}
+.login-logo-mark{width:38px;height:38px;}
+.login-company{font-size:14px;font-weight:900;color:var(--text-1);text-align:left;line-height:1.3;}
+.login-company-sub{font-size:9px;color:var(--text-3);letter-spacing:0.04em;}
+.login-divider{width:100%;height:1px;background:var(--border);margin-bottom:24px;}
+.login-title{font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:6px;}
+.login-sub{font-size:11px;color:var(--text-3);margin-bottom:28px;line-height:1.7;}
+.ms-login-btn{width:100%;padding:13px 16px;background:var(--accent);color:var(--white);border:none;border-radius:7px;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:700;letter-spacing:0.06em;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
+.ms-login-btn:hover{background:#2d2a26;}
+.ms-icon{width:18px;height:18px;flex-shrink:0;}
+.login-loading{display:none;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-3);margin-top:14px;letter-spacing:0.1em;}
+.login-note{font-size:10px;color:var(--text-3);margin-top:16px;line-height:1.7;}
 
-/* ===== MAIN APP ===== */
-#app { display:none; }
+/* APP */
+#app{display:none;}
+.sync-bar{padding:5px 20px;background:rgba(74,124,111,0.08);border-bottom:1px solid rgba(74,124,111,0.15);font-family:'DM Mono',monospace;font-size:9px;color:var(--accent3);letter-spacing:0.1em;display:none;align-items:center;gap:6px;}
+.sync-bar.show{display:flex;}
 
 /* HEADER */
-header {
-  background:var(--white); border-bottom:2px solid var(--border); height:58px;
-  display:flex; align-items:center; padding:0 24px;
-  position:sticky; top:0; z-index:50; box-shadow:var(--shadow-sm);
-}
+header{background:var(--white);border-bottom:2px solid var(--border);height:58px;display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow-sm);}
 .logo-wrap{display:flex;align-items:center;gap:10px;}
 .logo-mark{width:30px;height:30px;flex-shrink:0;}
 .logo-company{font-size:13px;font-weight:900;color:var(--text-1);letter-spacing:0.02em;line-height:1.2;}
@@ -85,6 +51,8 @@ header {
 .system-title{font-size:14px;font-weight:700;color:var(--text-1);letter-spacing:0.04em;}
 .system-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.15em;text-transform:uppercase;margin-top:1px;}
 .header-spacer{flex:1;}
+.user-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2);margin-right:12px;}
+.user-avatar{width:24px;height:24px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--white);font-weight:700;}
 .online-pill{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.12em;padding:4px 10px;border:1px solid var(--border);border-radius:20px;margin-right:12px;}
 .online-dot{width:5px;height:5px;background:#3d9970;border-radius:50%;box-shadow:0 0 5px #3d9970;animation:blink 2.5s infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
@@ -94,23 +62,17 @@ header {
 /* LAYOUT */
 .layout{display:grid;grid-template-columns:1fr 360px;gap:0;min-height:calc(100vh - 58px);}
 .pane-list{padding:20px;border-right:1px solid var(--border);overflow-y:auto;}
-
-/* TOOLBAR */
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
 .toolbar-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.2em;text-transform:uppercase;padding-right:10px;border-right:1px solid var(--border);margin-right:2px;white-space:nowrap;}
-.tb-select{padding:6px 24px 6px 10px;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%239a948c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);appearance:none;cursor:pointer;transition:border-color 0.15s;}
+.tb-select{padding:6px 24px 6px 10px;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%239a948c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);appearance:none;cursor:pointer;}
 .tb-select:focus{outline:none;border-color:var(--accent);}
-.tb-search{flex:1;min-width:140px;max-width:220px;padding:6px 10px;background:var(--white);border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);transition:border-color 0.15s;}
+.tb-search{flex:1;min-width:140px;max-width:220px;padding:6px 10px;background:var(--white);border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);}
 .tb-search::placeholder{color:var(--text-3);}
-.tb-search:focus{outline:none;border-color:var(--accent);background:var(--white);}
+.tb-search:focus{outline:none;border-color:var(--accent);}
 .count-chip{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-2);padding:5px 10px;background:var(--bg-panel);border:1px solid var(--border);border-radius:5px;margin-left:auto;white-space:nowrap;}
 .count-chip b{color:var(--text-1);}
-
-/* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
-
-/* CARD */
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);position:relative;}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);}
 .card:hover{border-color:var(--border-md);transform:translateY(-2px);box-shadow:var(--shadow-md);}
 .card.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(26,23,20,0.12);}
 .card-top{height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.2s;}
@@ -129,7 +91,7 @@ header {
 .card-desc{font-size:11px;color:var(--text-2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .card-footer{padding:8px 13px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .card-date{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);}
-.card-open{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);background:none;border:none;cursor:pointer;letter-spacing:0.1em;transition:color 0.15s;padding:0;}
+.card-open{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);background:none;border:none;cursor:pointer;letter-spacing:0.1em;padding:0;}
 .card:hover .card-open,.card.selected .card-open{color:var(--text-1);}
 
 /* RIGHT PANE */
@@ -140,8 +102,6 @@ header {
 .tab-btn:hover:not(.active){color:var(--text-2);background:var(--bg);}
 .tab-content{display:none;flex:1;overflow-y:auto;}
 .tab-content.active{display:block;}
-
-/* DETAIL */
 .det-photo{width:100%;height:200px;background:var(--bg-panel);display:flex;align-items:center;justify-content:center;font-size:60px;overflow:hidden;position:relative;border-bottom:1px solid var(--border);}
 .det-photo img{width:100%;height:100%;object-fit:cover;}
 .det-id-strip{position:absolute;bottom:0;left:0;right:0;padding:5px 14px;background:rgba(245,242,236,0.95);display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.1em;border-top:1px solid var(--border);}
@@ -156,8 +116,6 @@ header {
 .det-empty-icon{font-size:40px;margin-bottom:12px;opacity:0.3;}
 .det-empty-text{font-size:13px;color:var(--text-2);margin-bottom:6px;}
 .det-empty-sub{font-size:11px;}
-
-/* FORM */
 .form-wrap{padding:16px 18px;}
 .fsec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
 .fsec:last-of-type{border-bottom:none;}
@@ -183,7 +141,9 @@ header {
 .ai-loading{display:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-top:5px;}
 .btn-submit{width:100%;padding:11px;background:var(--accent);color:var(--white);border:none;border-radius:6px;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:700;letter-spacing:0.06em;cursor:pointer;margin-top:4px;transition:background 0.15s;}
 .btn-submit:hover{background:#2d2a26;}
+.btn-submit:disabled{background:#9a948c;cursor:not-allowed;}
 .success-msg{display:none;padding:10px 14px;margin-bottom:12px;background:rgba(74,124,111,0.1);border:1px solid rgba(74,124,111,0.25);border-radius:6px;font-size:12px;color:var(--accent3);font-weight:500;}
+.error-msg{display:none;padding:10px 14px;margin-bottom:12px;background:rgba(217,79,58,0.08);border:1px solid rgba(217,79,58,0.2);border-radius:6px;font-size:12px;color:var(--accent2);}
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
 .empty-icon{font-size:40px;margin-bottom:12px;opacity:.4;}
 .empty-text{font-size:13px;margin-bottom:5px;color:var(--text-2);}
@@ -196,14 +156,14 @@ header {
 </head>
 <body>
 
-<!-- ===== LOGIN SCREEN ===== -->
+<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <svg class="login-logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 30 L16 6" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
-        <path d="M20 6 L20 30" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
-        <path d="M20 6 Q32 6 32 18 Q32 30 20 30" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+      <svg class="login-logo-mark" viewBox="0 0 38 38" fill="none">
+        <path d="M6 32 L16 6" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 6 L20 32" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 6 Q33 6 33 19 Q33 32 20 32" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round" fill="none"/>
       </svg>
       <div>
         <div class="login-company">株式会社 システムデザイン</div>
@@ -212,20 +172,27 @@ header {
     </div>
     <div class="login-divider"></div>
     <div class="login-title">金融機関 設備台帳</div>
-    <div class="login-sub">社内システムです。パスワードを入力してください。</div>
-    <label class="login-label">パスワード</label>
-    <input class="login-input" type="password" id="pwInput" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPw()">
-    <button class="login-btn" onclick="checkPw()">ログイン</button>
-    <div class="login-error" id="loginError">パスワードが正しくありません</div>
-    <div class="login-note">このシステムは株式会社システムデザインの<br>社内専用システムです。</div>
+    <div class="login-sub">Microsoft 365アカウントでログインしてください。<br>社内メンバー専用システムです。</div>
+    <button class="ms-login-btn" onclick="signIn()">
+      <svg class="ms-icon" viewBox="0 0 21 21" fill="none">
+        <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
+        <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
+        <rect x="1" y="11" width="9" height="9" fill="#00a4ef"/>
+        <rect x="11" y="11" width="9" height="9" fill="#ffb900"/>
+      </svg>
+      Microsoft 365 でログイン
+    </button>
+    <div class="login-loading" id="loginLoading">● 認証中...</div>
+    <div class="login-note">社内専用システムです。社外への共有・公開禁止。</div>
   </div>
 </div>
 
-<!-- ===== MAIN APP ===== -->
+<!-- APP -->
 <div id="app">
+<div class="sync-bar" id="syncBar">● OneDrive と同期済み</div>
 <header>
   <div class="logo-wrap">
-    <svg class="logo-mark" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg class="logo-mark" viewBox="0 0 30 30" fill="none">
       <path d="M5 25 L13 5" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
       <path d="M16 5 L16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
       <path d="M16 5 Q26 5 26 15 Q26 25 16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round" fill="none"/>
@@ -241,11 +208,12 @@ header {
     <div class="system-sub">Financial Equipment Registry</div>
   </div>
   <div class="header-spacer"></div>
-  <div class="online-pill">
-    <div class="online-dot"></div>
-    ONLINE
+  <div class="user-pill">
+    <div class="user-avatar" id="userAvatar">—</div>
+    <span id="userName">—</span>
   </div>
-  <button class="logout-btn" onclick="logout()">ログアウト</button>
+  <div class="online-pill"><div class="online-dot"></div>ONLINE</div>
+  <button class="logout-btn" onclick="signOut()">ログアウト</button>
 </header>
 
 <div class="layout">
@@ -285,7 +253,8 @@ header {
     </div>
     <div class="tab-content" id="contentReg">
       <div class="form-wrap">
-        <div class="success-msg" id="successMsg">✓ 登録しました！</div>
+        <div class="success-msg" id="successMsg">✓ OneDriveに保存しました！</div>
+        <div class="error-msg" id="errorMsg"></div>
         <div class="fsec">
           <div class="fsec-title">01 — 写真</div>
           <div class="upload-zone">
@@ -316,7 +285,7 @@ header {
           <button class="ai-btn" id="aiBtn" onclick="genAI()">✦ AIで解説文を自動生成</button>
           <div class="ai-loading" id="aiLoading">✦ 生成中...</div>
         </div>
-        <button class="btn-submit" onclick="registerEq()">登 録 す る</button>
+        <button class="btn-submit" id="submitBtn" onclick="registerEq()">登 録 す る</button>
       </div>
     </div>
     <div class="pdf-bar">
@@ -327,149 +296,271 @@ header {
 </div>
 
 <script>
-// ===== パスワード設定 =====
-// 変更したい場合はここの文字列を書き換えてください
-const PASSWORD = 'SD2026equipment';
+// ===== 設定（変更不要） =====
+const CLIENT_ID = 'e7caa6fe-84d9-4fd6-821a-72ff7a9bb989';
+const TENANT_ID = 'a0ce6143-a347-47f4-991d-97b926c598c6';
+const SITE_PATH = '/sites/stdn';
+const EXCEL_ITEM_PATH = `${SITE_PATH}/Shared%20Documents/SP%E5%85%B1%E6%9C%89%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80/%E8%A8%AD%E5%82%99%E5%8F%B0%E5%B8%B3/%E8%A8%AD%E5%82%99%E5%8F%B0%E5%B8%B3DB.xlsx`;
+const SHEET = 'Sheet1';
 
-// ===== LOGIN =====
-function checkPw() {
-  const val = document.getElementById('pwInput').value;
-  if (val === PASSWORD) {
-    sessionStorage.setItem('sd_auth', '1');
+const msalConfig = {
+  auth: {
+    clientId: CLIENT_ID,
+    authority: `https://login.microsoftonline.com/${TENANT_ID}`,
+    redirectUri: window.location.origin + window.location.pathname
+  },
+  cache: { cacheLocation: 'sessionStorage' }
+};
+const msalInstance = new msal.PublicClientApplication(msalConfig);
+const scopes = ['Files.ReadWrite', 'User.Read'];
+
+let db = [];
+let photoFile = null;
+let aiUsed = false;
+
+// ===== 認証 =====
+async function signIn() {
+  document.getElementById('loginLoading').style.display = 'block';
+  try {
+    const result = await msalInstance.loginPopup({ scopes });
+    const account = msalInstance.getAllAccounts()[0];
+    initUser(account);
+    await loadData();
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
-    init();
-  } else {
-    document.getElementById('loginError').style.display = 'block';
-    document.getElementById('pwInput').value = '';
-    document.getElementById('pwInput').focus();
+  } catch(e) {
+    document.getElementById('loginLoading').style.display = 'none';
+    alert('ログインに失敗しました。Microsoft 365アカウントをご確認ください。\n\nエラー: ' + (e.message || e));
   }
 }
 
-function logout() {
-  sessionStorage.removeItem('sd_auth');
-  location.reload();
+async function getToken() {
+  const account = msalInstance.getAllAccounts()[0];
+  if (!account) return null;
+  try {
+    const r = await msalInstance.acquireTokenSilent({ scopes, account });
+    return r.accessToken;
+  } catch {
+    const r = await msalInstance.acquireTokenPopup({ scopes });
+    return r.accessToken;
+  }
 }
 
-// 既にログイン済みなら自動的にアプリを表示
-if (sessionStorage.getItem('sd_auth') === '1') {
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
+function initUser(account) {
+  const name = account.name || account.username || '';
+  document.getElementById('userAvatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('userName').textContent = name.split('@')[0];
 }
 
-// ===== DATA =====
-let db = [
-  { id:1, name:"テラーマシン（現金処理機）", maker:"グローリー株式会社", bank:"きらぼし銀行", branch:"豊洲支店", desc:"窓口業務を効率化する現金処理機。紙幣・硬貨の入出金・計数・収納を自動化。テラーが直接操作し顧客への現金支払い・受け取りを迅速に行う。設置には専用配線スペース（100V/15A）と床補強が必要。重量約180kg。", ai:true, photo:null, emoji:"🏧", date:"2025-10-12" },
-  { id:2, name:"ATM（現金自動預払機）", maker:"沖電気工業（OKI）", bank:"西武信用金庫", branch:"池袋支店", desc:"顧客が自己操作で現金の入出金・残高照会・振込を行う端末。ロビーまたは専用コーナーに設置。24時間稼働対応モデルあり。設置スペース：W900×D800×H1800mm程度。専用回線・セキュリティ配線が必要。床荷重500kg/m²以上推奨。", ai:true, photo:null, emoji:"💳", date:"2025-11-03" },
-  { id:3, name:"オープン出納機", maker:"日立オムロンターミナルソリューションズ", bank:"昭和信用金庫", branch:"荻窪支店", desc:"オープンカウンター形式の窓口に設置する現金管理機。カウンター上に配置しオープンバンキングスタイルに対応。紙幣収納と計数機能を持つ。カウンター埋め込みタイプと卓上タイプがある。", ai:true, photo:null, emoji:"🗃️", date:"2025-11-20" },
-  { id:4, name:"番号発券機", maker:"ウエスタン・デジタル", bank:"朝日信用金庫", branch:"篠崎支店", desc:"来店顧客に受付番号を発行する機器。ロビーエントランス付近に設置。業務種別を選択後に番号票を発行し呼び出しシステムと連動。壁付けタイプ・スタンドタイプがある。電源：100V/2A。", ai:false, photo:null, emoji:"🎫", date:"2025-12-01" },
-  { id:5, name:"通帳・カード発行機", maker:"富士通フロンテック", bank:"きらぼし銀行", branch:"新宿支店", desc:"口座開設時や通帳再発行時に使用する機器。通帳の印字・発行とキャッシュカードの発行を一体化した多機能端末。バックヤードに設置することが多く行員専用操作。専用消耗品の在庫管理が必要。", ai:true, photo:null, emoji:"📋", date:"2025-12-15" },
-  { id:6, name:"電子サイン端末", maker:"ワコム", bank:"西武信用金庫", branch:"所沢支店", desc:"紙の申込書に代わる電子署名用タブレット端末。窓口カウンターに設置し顧客がスタイラスペンで署名。ペーパーレス化に対応し書類の電子保管が可能。カウンターへの設置固定方法の選定が必要。", ai:false, photo:null, emoji:"✍️", date:"2026-01-08" }
-];
-let photoURL = null, aiUsed = false;
+function signOut() {
+  msalInstance.logoutPopup();
+}
 
-function init() { buildFilters(); applyFilters(); }
+// ===== データ読み込み =====
+async function loadData() {
+  try {
+    const token = await getToken();
+    const url = `https://graph.microsoft.com/v1.0${EXCEL_ITEM_PATH}:/workbook/worksheets('${SHEET}')/usedRange`;
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    if (!res.ok) { buildFilters(); applyFilters(); return; }
+    const data = await res.json();
+    const rows = data.values || [];
+    db = rows.slice(1).filter(r => r[1]).map(r => ({
+      id: String(r[0] || Date.now()),
+      name: r[1] || '',
+      maker: r[2] || '',
+      bank: r[3] || '',
+      branch: r[4] || '',
+      desc: r[5] || '',
+      photoUrl: r[6] || null,
+      date: r[7] || '',
+      ai: r[8] === true || r[8] === 'TRUE' || r[8] === 1,
+      emoji: r[9] || '📦'
+    }));
+    showSync();
+  } catch(e) {
+    console.error('読み込みエラー:', e);
+    db = [];
+  }
+  buildFilters();
+  applyFilters();
+}
 
+// ===== データ保存 =====
+async function saveRow(eq) {
+  try {
+    const token = await getToken();
+    const nextRow = db.length + 2; // ヘッダー1行 + 既存データ + 新規
+    const range = `A${nextRow}:J${nextRow}`;
+    const url = `https://graph.microsoft.com/v1.0${EXCEL_ITEM_PATH}:/workbook/worksheets('${SHEET}')/range(address='${range}')`;
+    const res = await fetch(url, {
+      method: 'PATCH',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ values: [[eq.id, eq.name, eq.maker, eq.bank, eq.branch, eq.desc, eq.photoUrl || '', eq.date, eq.ai, eq.emoji]] })
+    });
+    return res.ok;
+  } catch(e) {
+    console.error('保存エラー:', e);
+    return false;
+  }
+}
+
+// ===== 写真アップロード =====
+async function uploadPhoto(file, id) {
+  try {
+    const token = await getToken();
+    const ext = file.name.split('.').pop();
+    const name = `${id}.${ext}`;
+    const path = `${SITE_PATH}/Shared%20Documents/SP%E5%85%B1%E6%9C%89%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80/%E8%A8%AD%E5%82%99%E5%8F%B0%E5%B8%B3/%E5%86%99%E7%9C%9F/${name}`;
+    const url = `https://graph.microsoft.com/v1.0${path}:/content`;
+    const res = await fetch(url, {
+      method: 'PUT',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': file.type },
+      body: file
+    });
+    if (res.ok) { const d = await res.json(); return d.webUrl || null; }
+    return null;
+  } catch { return null; }
+}
+
+function showSync() {
+  const bar = document.getElementById('syncBar');
+  bar.classList.add('show');
+  setTimeout(() => bar.classList.remove('show'), 3000);
+}
+
+// ===== UI =====
 function switchTab(tab) {
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
-  document.getElementById('tab'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
-  document.getElementById('content'+tab.charAt(0).toUpperCase()+tab.slice(1)).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  const t = tab.charAt(0).toUpperCase() + tab.slice(1);
+  document.getElementById('tab' + t).classList.add('active');
+  document.getElementById('content' + t).classList.add('active');
 }
 
 function renderGrid(data) {
   const g = document.getElementById('grid');
   document.getElementById('countChip').innerHTML = `<b>${data.length}</b> / ${db.length} 件`;
-  if (!data.length) { g.innerHTML = `<div class="empty"><div class="empty-icon">🏦</div><div class="empty-text">該当する機器がありません</div><div class="empty-sub">フィルターを変更するか新規登録してください</div></div>`; return; }
+  if (!data.length) {
+    g.innerHTML = `<div class="empty"><div class="empty-icon">🏦</div><div class="empty-text">該当する機器がありません</div><div class="empty-sub">新規登録してください</div></div>`;
+    return;
+  }
   g.innerHTML = data.map(eq => `
-    <div class="card" id="card-${eq.id}" onclick="selectCard(${eq.id})">
+    <div class="card" id="card-${eq.id}" onclick="selectCard('${eq.id}')">
       <div class="card-top"></div>
-      <div class="card-photo">${eq.photo?`<img src="${eq.photo}">`:`${eq.emoji}`}</div>
+      <div class="card-photo">${eq.photoUrl ? `<img src="${eq.photoUrl}">` : eq.emoji}</div>
       <div class="card-body">
-        <div class="card-row1"><div class="card-name">${eq.name}</div>${eq.ai?`<span class="badge-ai">AI</span>`:''}</div>
-        <div class="card-maker">${eq.maker||'—'}</div>
-        <div class="tags"><span class="tag tag-bank">${eq.bank}</span>${eq.branch?`<span class="tag tag-branch">${eq.branch}</span>`:''}</div>
-        <div class="card-desc">${eq.desc||'解説未入力'}</div>
+        <div class="card-row1"><div class="card-name">${eq.name}</div>${eq.ai ? `<span class="badge-ai">AI</span>` : ''}</div>
+        <div class="card-maker">${eq.maker || '—'}</div>
+        <div class="tags"><span class="tag tag-bank">${eq.bank}</span>${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}</div>
+        <div class="card-desc">${eq.desc || '解説未入力'}</div>
       </div>
       <div class="card-footer"><span class="card-date">登録 ${eq.date}</span><span class="card-open">詳細 →</span></div>
     </div>`).join('');
 }
 
 function selectCard(id) {
-  const eq = db.find(e=>e.id===id); if(!eq) return;
-  document.querySelectorAll('.card').forEach(c=>c.classList.remove('selected'));
-  const el = document.getElementById('card-'+id); if(el) el.classList.add('selected');
-  document.getElementById('detEmpty').style.display='none';
-  document.getElementById('detContent').style.display='block';
-  document.getElementById('detPhoto').innerHTML=`${eq.photo?`<img src="${eq.photo}">`:`<span style="font-size:56px">${eq.emoji}</span>`}<div class="det-id-strip"><span>ID-${String(eq.id).padStart(4,'0')}</span><span>${eq.date}</span></div>`;
-  document.getElementById('detTags').innerHTML=`<span class="tag tag-bank">${eq.bank}</span>${eq.branch?`<span class="tag tag-branch">${eq.branch}</span>`:''}`;
-  document.getElementById('detName').textContent=eq.name;
-  document.getElementById('detMaker').textContent=eq.maker||'';
-  document.getElementById('detAiNote').innerHTML=eq.ai?`<div class="det-ai">✦ AI自動生成解説</div>`:'';
-  document.getElementById('detDesc').textContent=eq.desc||'解説未入力';
+  const eq = db.find(e => e.id === id); if (!eq) return;
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
+  const el = document.getElementById('card-' + id); if (el) el.classList.add('selected');
+  document.getElementById('detEmpty').style.display = 'none';
+  document.getElementById('detContent').style.display = 'block';
+  document.getElementById('detPhoto').innerHTML = `
+    ${eq.photoUrl ? `<img src="${eq.photoUrl}">` : `<span style="font-size:56px">${eq.emoji}</span>`}
+    <div class="det-id-strip"><span>ID-${eq.id.toString().slice(-4)}</span><span>${eq.date}</span></div>`;
+  document.getElementById('detTags').innerHTML = `<span class="tag tag-bank">${eq.bank}</span>${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}`;
+  document.getElementById('detName').textContent = eq.name;
+  document.getElementById('detMaker').textContent = eq.maker || '';
+  document.getElementById('detAiNote').innerHTML = eq.ai ? `<div class="det-ai">✦ AI自動生成解説</div>` : '';
+  document.getElementById('detDesc').textContent = eq.desc || '解説未入力';
   switchTab('detail');
 }
 
 function buildFilters() {
-  const banks=[...new Set(db.map(e=>e.bank))].sort();
-  const bs=document.getElementById('filterBank');
-  bs.innerHTML='<option value="">すべての金融機関</option>';
-  banks.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;bs.appendChild(o);});
+  const banks = [...new Set(db.map(e => e.bank).filter(Boolean))].sort();
+  const bs = document.getElementById('filterBank');
+  bs.innerHTML = '<option value="">すべての金融機関</option>';
+  banks.forEach(b => { const o = document.createElement('option'); o.value = b; o.textContent = b; bs.appendChild(o); });
 }
 
 function applyFilters() {
-  const bank=document.getElementById('filterBank').value;
-  const brs=document.getElementById('filterBranch');
-  const curBr=brs.value;
-  const branches=[...new Set(db.filter(e=>!bank||e.bank===bank).map(e=>e.branch).filter(Boolean))].sort();
-  brs.innerHTML='<option value="">すべての支店</option>';
-  branches.forEach(b=>{const o=document.createElement('option');o.value=b;o.textContent=b;if(b===curBr)o.selected=true;brs.appendChild(o);});
-  const search=document.getElementById('filterSearch').value.toLowerCase();
-  const branch=brs.value;
-  renderGrid(db.filter(e=>(!bank||e.bank===bank)&&(!branch||e.branch===branch)&&(!search||e.name.toLowerCase().includes(search)||(e.desc||'').toLowerCase().includes(search))));
+  const bank = document.getElementById('filterBank').value;
+  const brs = document.getElementById('filterBranch');
+  const curBr = brs.value;
+  const branches = [...new Set(db.filter(e => !bank || e.bank === bank).map(e => e.branch).filter(Boolean))].sort();
+  brs.innerHTML = '<option value="">すべての支店</option>';
+  branches.forEach(b => { const o = document.createElement('option'); o.value = b; o.textContent = b; if (b === curBr) o.selected = true; brs.appendChild(o); });
+  const search = document.getElementById('filterSearch').value.toLowerCase();
+  const branch = brs.value;
+  renderGrid(db.filter(e => (!bank || e.bank === bank) && (!branch || e.branch === branch) && (!search || e.name.toLowerCase().includes(search) || (e.desc || '').toLowerCase().includes(search))));
 }
 
 function prevPhoto(input) {
-  if(input.files&&input.files[0]){const r=new FileReader();r.onload=e=>{photoURL=e.target.result;document.getElementById('upPreview').src=photoURL;document.getElementById('upPreview').style.display='block';['upIcon','upText','upSub'].forEach(i=>document.getElementById(i).style.display='none');};r.readAsDataURL(input.files[0]);}
+  if (input.files && input.files[0]) {
+    photoFile = input.files[0];
+    const r = new FileReader();
+    r.onload = e => {
+      document.getElementById('upPreview').src = e.target.result;
+      document.getElementById('upPreview').style.display = 'block';
+      ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = 'none');
+    };
+    r.readAsDataURL(input.files[0]);
+  }
 }
 
 async function genAI() {
-  const name=document.getElementById('iName').value.trim();
-  const maker=document.getElementById('iMaker').value.trim();
-  const bank=document.getElementById('iBank').value.trim();
-  if(!name){alert('機器名称を入力してください。');return;}
-  document.getElementById('aiLoading').style.display='block';
-  document.getElementById('aiBtn').style.display='none';
+  const name = document.getElementById('iName').value.trim();
+  if (!name) { alert('機器名称を入力してください。'); return; }
+  const maker = document.getElementById('iMaker').value.trim();
+  const bank = document.getElementById('iBank').value.trim();
+  document.getElementById('aiLoading').style.display = 'block';
+  document.getElementById('aiBtn').style.display = 'none';
   try {
-    const prompt=`金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker?`メーカー：${maker}。`:''}${bank?`設置先：${bank}。`:''}\n含める内容：①用途・機能 ②設置場所（ロビー/窓口/バックヤード等） ③内装工事時の注意点（電源・スペース・重量・床補強等）\n解説文のみ返答してください。`;
-    const res=await fetch("https://api.anthropic.com/v1/messages",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1000,messages:[{role:"user",content:prompt}]})});
-    const data=await res.json();
-    document.getElementById('iDesc').value=data.content?.find(c=>c.type==='text')?.text?.trim()||'';
-    aiUsed=true;
-  } catch(e) {
-    document.getElementById('iDesc').value=`${name}は金融機関の窓口業務に使用される機器です。設置の際は電源容量・設置スペース・重量について事前確認が必要です。`;
+    const prompt = `金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker ? `メーカー：${maker}。` : ''}${bank ? `設置先：${bank}。` : ''}\n含める内容：①用途・機能 ②設置場所 ③内装工事時の注意点\n解説文のみ返答してください。`;
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: prompt }] })
+    });
+    const data = await res.json();
+    document.getElementById('iDesc').value = data.content?.find(c => c.type === 'text')?.text?.trim() || '';
+    aiUsed = true;
+  } catch { document.getElementById('iDesc').value = `${name}は金融機関の窓口業務に使用される機器です。`; }
+  document.getElementById('aiLoading').style.display = 'none';
+}
+
+async function registerEq() {
+  const name = document.getElementById('iName').value.trim();
+  const bank = document.getElementById('iBank').value.trim();
+  if (!name || !bank) { alert('機器名称と金融機関は必須です。'); return; }
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true; btn.textContent = '保存中...';
+  const id = String(Date.now());
+  let photoUrl = null;
+  if (photoFile) photoUrl = await uploadPhoto(photoFile, id);
+  const newEq = { id, name, maker: document.getElementById('iMaker').value.trim(), bank, branch: document.getElementById('iBranch').value.trim(), desc: document.getElementById('iDesc').value.trim(), photoUrl, date: new Date().toISOString().slice(0,10), ai: aiUsed, emoji: '📦' };
+  const saved = await saveRow(newEq);
+  btn.disabled = false; btn.textContent = '登 録 す る';
+  if (saved) {
+    db.unshift(newEq);
+    ['iName','iMaker','iBank','iBranch','iDesc'].forEach(i => document.getElementById(i).value = '');
+    document.getElementById('upPreview').style.display = 'none';
+    ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = '');
+    document.getElementById('aiBtn').style.display = '';
+    photoFile = null; aiUsed = false;
+    const msg = document.getElementById('successMsg'); msg.style.display = 'block';
+    setTimeout(() => msg.style.display = 'none', 4000);
+    buildFilters(); applyFilters(); showSync();
+    setTimeout(() => selectCard(newEq.id), 100);
+  } else {
+    const err = document.getElementById('errorMsg');
+    err.textContent = '保存に失敗しました。もう一度お試しください。';
+    err.style.display = 'block';
+    setTimeout(() => err.style.display = 'none', 4000);
   }
-  document.getElementById('aiLoading').style.display='none';
 }
 
-function registerEq() {
-  const name=document.getElementById('iName').value.trim();
-  const bank=document.getElementById('iBank').value.trim();
-  if(!name||!bank){alert('機器名称と金融機関は必須です。');return;}
-  const newEq={id:Date.now(),name,maker:document.getElementById('iMaker').value.trim(),bank,branch:document.getElementById('iBranch').value.trim(),desc:document.getElementById('iDesc').value.trim(),ai:aiUsed,photo:photoURL,emoji:'📦',date:new Date().toISOString().slice(0,10)};
-  db.unshift(newEq);
-  ['iName','iMaker','iBank','iBranch','iDesc'].forEach(i=>document.getElementById(i).value='');
-  document.getElementById('upPreview').style.display='none';
-  ['upIcon','upText','upSub'].forEach(i=>document.getElementById(i).style.display='');
-  document.getElementById('aiBtn').style.display='';
-  photoURL=null;aiUsed=false;
-  const msg=document.getElementById('successMsg');msg.style.display='block';setTimeout(()=>{msg.style.display='none';},3000);
-  buildFilters();applyFilters();
-  setTimeout(()=>selectCard(newEq.id),100);
-}
-
-// 既にログイン済みなら初期化
-if (sessionStorage.getItem('sd_auth') === '1') { init(); }
+msalInstance.handleRedirectPromise().catch(() => {});
 </script>
 </body>
 </html>
