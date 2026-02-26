@@ -322,8 +322,18 @@ let aiUsed = false;
 async function signIn() {
   document.getElementById('loginLoading').style.display = 'block';
   try {
+    // まずサイレントログインを試みる
+    const accounts = msalInstance.getAllAccounts();
+    if (accounts.length > 0) {
+      const result = await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
+      initUser(accounts[0]);
+      await loadData();
+      document.getElementById('loginScreen').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      return;
+    }
+    // 新規ログインはリダイレクト
     await msalInstance.loginRedirect({ scopes });
-    // リダイレクト後にhandleRedirectPromiseで処理されます
   } catch(e) {
     document.getElementById('loginLoading').style.display = 'none';
     alert('ログインに失敗しました。\n\nエラー: ' + (e.message || e));
