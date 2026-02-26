@@ -300,7 +300,8 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 const CLIENT_ID = 'e7caa6fe-84d9-4fd6-821a-72ff7a9bb989';
 const TENANT_ID = 'a0ce6143-a347-47f4-991d-97b926c598c6';
 const SITE_PATH = '/sites/stdn';
-const EXCEL_ITEM_PATH = `${SITE_PATH}/Shared%20Documents/SP%E5%85%B1%E6%9C%89%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80/%E8%A8%AD%E5%82%99%E5%8F%B0%E5%B8%B3/%E8%A8%AD%E5%82%99%E5%8F%B0%E5%B8%B3DB.xlsx`;
+const FILE_ID = 'E2CF3063-74CE-4A29-8DB7-BF36A4058EE6';
+const EXCEL_ITEM_PATH = `${SITE_PATH}/drive/items/${FILE_ID}`;
 const SHEET = 'Sheet1';
 
 const msalConfig = {
@@ -312,7 +313,7 @@ const msalConfig = {
   cache: { cacheLocation: 'sessionStorage' }
 };
 const msalInstance = new msal.PublicClientApplication(msalConfig);
-const scopes = ['Files.ReadWrite', 'User.Read'];
+const scopes = ['Files.ReadWrite', 'Sites.ReadWrite.All', 'User.Read'];
 
 let db = [];
 let photoFile = null;
@@ -366,7 +367,7 @@ function signOut() {
 async function loadData() {
   try {
     const token = await getToken();
-    const url = `https://graph.microsoft.com/v1.0${EXCEL_ITEM_PATH}:/workbook/worksheets('${SHEET}')/usedRange`;
+    const url = `https://graph.microsoft.com/v1.0/sites/systemdesign56.sharepoint.com:/sites/stdn:/drive/items/${FILE_ID}/workbook/worksheets('${SHEET}')/usedRange`;
     const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
     if (!res.ok) { buildFilters(); applyFilters(); return; }
     const data = await res.json();
@@ -398,7 +399,7 @@ async function saveRow(eq) {
     const token = await getToken();
     const nextRow = db.length + 2; // ヘッダー1行 + 既存データ + 新規
     const range = `A${nextRow}:J${nextRow}`;
-    const url = `https://graph.microsoft.com/v1.0${EXCEL_ITEM_PATH}:/workbook/worksheets('${SHEET}')/range(address='${range}')`;
+    const url = `https://graph.microsoft.com/v1.0/sites/systemdesign56.sharepoint.com:/sites/stdn:/drive/items/${FILE_ID}/workbook/worksheets('${SHEET}')/range(address='${range}')`;
     const res = await fetch(url, {
       method: 'PATCH',
       headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
