@@ -556,7 +556,15 @@ async function registerEq() {
   }
 }
 
-msalInstance.handleRedirectPromise().catch(() => {});
+msalInstance.handleRedirectPromise().then(async (result) => {
+  const account = msalInstance.getAllAccounts()[0];
+  if (account) {
+    initUser(account);
+    await loadData();
+    document.getElementById('loginScreen').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+  }
+}).catch((e) => { console.error(e); });
 </script>
 </body>
 </html>
