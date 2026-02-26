@@ -322,15 +322,11 @@ let aiUsed = false;
 async function signIn() {
   document.getElementById('loginLoading').style.display = 'block';
   try {
-    const result = await msalInstance.loginPopup({ scopes });
-    const account = msalInstance.getAllAccounts()[0];
-    initUser(account);
-    await loadData();
-    document.getElementById('loginScreen').style.display = 'none';
-    document.getElementById('app').style.display = 'block';
+    await msalInstance.loginRedirect({ scopes });
+    // リダイレクト後にhandleRedirectPromiseで処理されます
   } catch(e) {
     document.getElementById('loginLoading').style.display = 'none';
-    alert('ログインに失敗しました。Microsoft 365アカウントをご確認ください。\n\nエラー: ' + (e.message || e));
+    alert('ログインに失敗しました。\n\nエラー: ' + (e.message || e));
   }
 }
 
