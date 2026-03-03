@@ -10,11 +10,10 @@
 :root{--bg:#f5f2ec;--bg-card:#fff;--bg-panel:#f0ece4;--border:#ddd8ce;--border-md:#c8c2b6;--text-1:#1a1714;--text-2:#5a5450;--text-3:#9a948c;--accent:#1a1714;--accent2:#d94f3a;--accent3:#4a7c6f;--white:#fff;--shadow-sm:0 1px 4px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--shadow-lg:0 12px 48px rgba(0,0,0,.12);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text-1);min-height:100vh;}
-/* LOGIN */
 #loginScreen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;}
 .login-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:44px 40px 36px;width:360px;box-shadow:var(--shadow-lg);text-align:center;}
 .login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;}
-.login-company{font-size:14px;font-weight:900;color:var(--text-1);text-align:left;line-height:1.3;}
+.login-company{font-size:14px;font-weight:900;text-align:left;line-height:1.3;}
 .login-company-sub{font-size:9px;color:var(--text-3);letter-spacing:.04em;}
 .login-divider{width:100%;height:1px;background:var(--border);margin-bottom:24px;}
 .login-title{font-size:16px;font-weight:700;margin-bottom:6px;}
@@ -23,9 +22,8 @@ body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text
 .ms-btn:hover{background:#2d2a26;}
 .ms-icon{width:18px;height:18px;}
 .login-loading{display:none;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-3);margin-top:14px;}
-.login-err{display:none;font-size:11px;color:var(--accent2);margin-top:10px;padding:8px;background:rgba(217,79,58,.08);border-radius:5px;}
+.login-err{display:none;font-size:11px;color:var(--accent2);margin-top:10px;padding:8px;background:rgba(217,79,58,.08);border-radius:5px;line-height:1.6;}
 .login-note{font-size:10px;color:var(--text-3);margin-top:16px;line-height:1.7;}
-/* APP */
 #app{display:none;}
 .sync-bar{padding:5px 20px;background:rgba(74,124,111,.08);border-bottom:1px solid rgba(74,124,111,.15);font-family:'DM Mono',monospace;font-size:9px;color:var(--accent3);letter-spacing:.1em;display:none;align-items:center;gap:6px;}
 .sync-bar.show{display:flex;}
@@ -44,7 +42,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 .logout-btn{padding:6px 14px;background:transparent;border:1px solid var(--border-md);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-3);cursor:pointer;transition:all .15s;}
 .logout-btn:hover{border-color:var(--accent2);color:var(--accent2);}
-/* LAYOUT */
 .layout{display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 58px);}
 .pane-list{padding:20px;border-right:1px solid var(--border);}
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
@@ -64,18 +61,15 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 .card-photo{width:100%;height:140px;background:var(--bg-panel);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:44px;overflow:hidden;}
 .card-photo img{width:100%;height:100%;object-fit:cover;}
 .card-body{padding:11px 13px 10px;}
-.card-row1{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
-.card-name{font-size:13px;font-weight:700;line-height:1.4;flex:1;padding-right:6px;}
-.badge-ai{font-family:'DM Mono',monospace;font-size:8px;padding:2px 5px;background:rgba(217,79,58,.08);border:1px solid rgba(217,79,58,.2);border-radius:3px;color:var(--accent2);}
+.card-name{font-size:13px;font-weight:700;line-height:1.4;margin-bottom:5px;}
 .card-maker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:8px;}
 .tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
 .tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;}
 .tag-bank{background:rgba(74,124,111,.1);border:1px solid rgba(74,124,111,.2);color:var(--accent3);}
 .tag-branch{background:var(--bg-panel);border:1px solid var(--border);color:var(--text-2);}
 .card-desc{font-size:11px;color:var(--text-2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
-.card-footer{padding:8px 13px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.card-footer{padding:8px 13px;border-top:1px solid var(--border);}
 .card-date{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);}
-/* RIGHT PANE */
 .pane-right{background:var(--white);display:flex;flex-direction:column;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;}
 .tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
 .tab-btn{flex:1;padding:12px 0;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;background:transparent;border:none;cursor:pointer;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
@@ -92,9 +86,8 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 .det-maker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:14px;}
 .det-sec{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:.2em;text-transform:uppercase;margin-bottom:7px;}
 .det-desc{font-size:12px;color:var(--text-2);line-height:1.85;}
-.det-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;color:var(--text-3);}
+.det-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;}
 .det-empty-icon{font-size:40px;margin-bottom:12px;opacity:.3;}
-/* FORM */
 .form-wrap{padding:16px 18px;}
 .fsec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
 .fsec:last-of-type{border-bottom:none;}
@@ -107,13 +100,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 .fi::placeholder,.fta::placeholder{color:var(--text-3);}
 .fi:focus,.fta:focus{outline:none;border-color:var(--accent);background:var(--white);}
 .fta{resize:vertical;min-height:80px;line-height:1.7;}
-.upload-zone{border:1.5px dashed var(--border-md);border-radius:6px;padding:16px;text-align:center;cursor:pointer;position:relative;background:var(--bg);transition:all .15s;}
-.upload-zone:hover{border-color:var(--accent);}
-.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.up-icon{font-size:20px;margin-bottom:4px;}
-.up-text{font-size:11px;color:var(--text-2);}
-.up-sub{font-size:10px;color:var(--text-3);margin-top:2px;}
-.up-prev{width:100%;max-height:120px;object-fit:cover;border-radius:5px;margin-top:8px;display:none;}
 .ai-btn{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:6px 12px;background:rgba(217,79,58,.06);border:1px solid rgba(217,79,58,.18);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--accent2);cursor:pointer;transition:all .15s;}
 .ai-btn:hover{background:rgba(217,79,58,.1);}
 .ai-loading{display:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-top:5px;}
@@ -124,7 +110,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 .msg-ok{background:rgba(74,124,111,.1);border:1px solid rgba(74,124,111,.25);color:var(--accent3);}
 .msg-err{background:rgba(217,79,58,.08);border:1px solid rgba(217,79,58,.2);color:var(--accent2);}
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
-.empty-icon{font-size:40px;margin-bottom:12px;opacity:.4;}
 .pdf-bar{padding:10px 20px;border-top:1px solid var(--border);background:var(--white);}
 .btn-pdf{width:100%;padding:8px;background:transparent;border:1px solid var(--border-md);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-2);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
 .btn-pdf:hover{border-color:#c9993a;color:#c9993a;}
@@ -133,7 +118,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
@@ -165,9 +149,8 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
   </div>
 </div>
 
-<!-- APP -->
 <div id="app">
-<div class="sync-bar" id="syncBar">● SharePointと同期済み</div>
+<div class="sync-bar" id="syncBar">● OneDriveと同期済み</div>
 <header>
   <div class="logo-wrap">
     <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
@@ -215,7 +198,7 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
       <div class="det-empty" id="detEmpty">
         <div class="det-empty-icon">👆</div>
         <div style="font-size:13px;color:var(--text-2);margin-bottom:6px;">左の機器をクリック</div>
-        <div style="font-size:11px;">詳細が表示されます</div>
+        <div style="font-size:11px;color:var(--text-3);">詳細が表示されます</div>
       </div>
       <div id="detContent" style="display:none;">
         <div class="det-photo" id="detPhoto"></div>
@@ -230,34 +213,24 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
     </div>
     <div class="tab-content" id="contentReg">
       <div class="form-wrap">
-        <div class="msg msg-ok" id="msgOk">✓ SharePointに保存しました！</div>
+        <div class="msg msg-ok" id="msgOk">✓ OneDriveに保存しました！</div>
         <div class="msg msg-err" id="msgErr"></div>
         <div class="fsec">
-          <div class="fsec-title">01 — 写真</div>
-          <div class="upload-zone">
-            <input type="file" accept="image/*" id="photoInput" onchange="prevPhoto(this)">
-            <div id="upIcon" class="up-icon">📷</div>
-            <div id="upText" class="up-text">クリックして写真をアップロード</div>
-            <div id="upSub" class="up-sub">JPG / PNG / HEIC</div>
-            <img id="upPrev" class="up-prev">
-          </div>
-        </div>
-        <div class="fsec">
-          <div class="fsec-title">02 — 機器情報</div>
+          <div class="fsec-title">01 — 機器情報</div>
           <div class="frow">
             <div class="fg"><label class="fl">機器名称<span class="req">*</span></label><input class="fi" id="iName" placeholder="テラーマシン"></div>
             <div class="fg"><label class="fl">メーカー</label><input class="fi" id="iMaker" placeholder="グローリー㈱"></div>
           </div>
         </div>
         <div class="fsec">
-          <div class="fsec-title">03 — 設置先</div>
+          <div class="fsec-title">02 — 設置先</div>
           <div class="frow">
             <div class="fg"><label class="fl">金融機関<span class="req">*</span></label><input class="fi" id="iBank" placeholder="きらぼし銀行"></div>
             <div class="fg"><label class="fl">支店名</label><input class="fi" id="iBranch" placeholder="豊洲支店"></div>
           </div>
         </div>
         <div class="fsec">
-          <div class="fsec-title">04 — 機器解説</div>
+          <div class="fsec-title">03 — 機器解説</div>
           <textarea class="fta" id="iDesc" placeholder="用途・機能・設置時の注意点など..."></textarea>
           <button class="ai-btn" id="aiBtn" onclick="genAI()">✦ AIで解説文を自動生成</button>
           <div class="ai-loading" id="aiLoading">✦ 生成中...</div>
@@ -273,11 +246,11 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 </div>
 
 <script>
-// ===== 設定 =====
 const CLIENT_ID = 'e7caa6fe-84d9-4fd6-821a-72ff7a9bb989';
 const TENANT_ID = 'a0ce6143-a347-47f4-991d-97b926c598c6';
-const SITE_URL = 'systemdesign56.sharepoint.com:/sites/equipment:';
-const LIST_NAME = '設備台帳';
+// 共有リンクをbase64エンコードしたsharing token
+const SHARING_TOKEN = 'u!aHR0cHM6Ly9zeXN0ZW1kZXNpZ241Ni5zaGFyZXBvaW50LmNvbS86eDovcy9zdGRuL0lRQmpNTV9pem5RcFNvMjN2emFrQlk3bUFhUWEzRGQya2E0NnI5NXlOaUZYNE9v';
+const SHEET = 'Sheet1';
 
 const msalConfig = {
   auth: {
@@ -287,41 +260,40 @@ const msalConfig = {
   },
   cache: { cacheLocation: 'sessionStorage' }
 };
-const msal_app = new msal.PublicClientApplication(msalConfig);
-const SCOPES = ['https://graph.microsoft.com/Sites.ReadWrite.All', 'User.Read'];
+const msalApp = new msal.PublicClientApplication(msalConfig);
+// Files.ReadWriteだけ。管理者承認不要。
+const SCOPES = ['Files.ReadWrite', 'User.Read'];
 
 let db = [];
-let photoFile = null;
 let aiUsed = false;
-let siteId = null;
-let listId = null;
+let driveId = null;
+let itemId = null;
 
-// ===== 認証 =====
 async function signIn() {
   document.getElementById('loginLoading').style.display = 'block';
   document.getElementById('loginErr').style.display = 'none';
   try {
-    await msal_app.loginRedirect({ scopes: SCOPES });
+    await msalApp.loginRedirect({ scopes: SCOPES });
   } catch(e) {
     document.getElementById('loginLoading').style.display = 'none';
-    showLoginErr('ログインに失敗しました: ' + (e.message || e));
+    showErr('loginErr', 'ログインエラー: ' + (e.message || e));
   }
 }
 
-function showLoginErr(msg) {
-  const el = document.getElementById('loginErr');
+function showErr(id, msg) {
+  const el = document.getElementById(id);
   el.textContent = msg;
   el.style.display = 'block';
 }
 
 async function getToken() {
-  const account = msal_app.getAllAccounts()[0];
+  const account = msalApp.getAllAccounts()[0];
   if (!account) return null;
   try {
-    const r = await msal_app.acquireTokenSilent({ scopes: SCOPES, account });
+    const r = await msalApp.acquireTokenSilent({ scopes: SCOPES, account });
     return r.accessToken;
   } catch {
-    const r = await msal_app.acquireTokenRedirect({ scopes: SCOPES });
+    await msalApp.acquireTokenRedirect({ scopes: SCOPES });
     return null;
   }
 }
@@ -332,96 +304,67 @@ function initUser(account) {
   document.getElementById('userName').textContent = name.split('@')[0];
 }
 
-function signOut() {
-  msal_app.logoutRedirect();
+function signOut() { msalApp.logoutRedirect(); }
+
+// 共有リンクからdriveId・itemIdを取得
+async function resolveSharedItem(token) {
+  const res = await fetch(
+    `https://graph.microsoft.com/v1.0/shares/${SHARING_TOKEN}/driveItem`,
+    { headers: { Authorization: `Bearer ${token}` } }
+  );
+  const data = await res.json();
+  if (!data.id) throw new Error('ファイルが見つかりません: ' + JSON.stringify(data));
+  driveId = data.parentReference.driveId;
+  itemId = data.id;
 }
 
-// ===== SharePoint サイト・リストID取得 =====
-async function getSiteAndListId(token) {
-  // サイトID取得
-  const siteRes = await fetch(`https://graph.microsoft.com/v1.0/sites/${SITE_URL}`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const siteData = await siteRes.json();
-  if (!siteData.id) throw new Error('サイトが見つかりません: ' + JSON.stringify(siteData));
-  siteId = siteData.id;
-
-  // リストID取得
-  const listRes = await fetch(`https://graph.microsoft.com/v1.0/sites/${siteId}/lists?$filter=displayName eq '${LIST_NAME}'`, {
-    headers: { Authorization: `Bearer ${token}` }
-  });
-  const listData = await listRes.json();
-  if (!listData.value || listData.value.length === 0) throw new Error('リストが見つかりません');
-  listId = listData.value[0].id;
-}
-
-// ===== データ読み込み =====
 async function loadData() {
   try {
     const token = await getToken();
     if (!token) return;
-    await getSiteAndListId(token);
-
+    await resolveSharedItem(token);
     const res = await fetch(
-      `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?$expand=fields&$top=500`,
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('${SHEET}')/usedRange`,
       { headers: { Authorization: `Bearer ${token}` } }
     );
     const data = await res.json();
-    db = (data.value || []).map(item => ({
-      id: item.id,
-      name: item.fields.Title || '',
-      maker: item.fields.x30e1x30fcx30abx30fc || item.fields['メーカー'] || '',
-      bank: item.fields.x91d1x878dx6a5fx95a2 || item.fields['金融機関'] || '',
-      branch: item.fields.x652fx5e97x540d || item.fields['支店名'] || '',
-      desc: item.fields.x89e3x8aaax6587 || item.fields['解説文'] || '',
-      photoUrl: item.fields.x5199x771fx554ax52b4 || item.fields['写真URL'] || null,
-      date: (item.fields.x767bx9332x65e5 || item.fields['登録日'] || '').slice(0, 10),
+    const rows = data.values || [];
+    db = rows.slice(1).filter(r => r[1]).map(r => ({
+      id: String(r[0] || Date.now()),
+      name: r[1] || '',
+      maker: r[2] || '',
+      bank: r[3] || '',
+      branch: r[4] || '',
+      desc: r[5] || '',
+      date: String(r[7] || '').slice(0, 10),
       emoji: '📦'
     }));
     showSync();
   } catch(e) {
-    console.error('データ読み込みエラー:', e);
+    console.error('読み込みエラー:', e);
     db = [];
   }
   buildFilters();
   applyFilters();
 }
 
-// ===== データ保存 =====
-async function saveItem(eq) {
+async function saveRow(eq) {
   try {
     const token = await getToken();
     if (!token) return false;
-    const today = new Date().toISOString().slice(0, 10);
+    const nextRow = db.length + 2;
+    const range = `A${nextRow}:H${nextRow}`;
     const res = await fetch(
-      `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`,
+      `https://graph.microsoft.com/v1.0/drives/${driveId}/items/${itemId}/workbook/worksheets('${SHEET}')/range(address='${range}')`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          fields: {
-            Title: eq.name,
-            'メーカー': eq.maker,
-            '金融機関': eq.bank,
-            '支店名': eq.branch,
-            '解説文': eq.desc,
-            '写真URL': eq.photoUrl || '',
-            '登録日': today
-          }
-        })
+        body: JSON.stringify({ values: [[eq.id, eq.name, eq.maker, eq.bank, eq.branch, eq.desc, '', eq.date]] })
       }
     );
-    if (res.ok) {
-      const d = await res.json();
-      eq.id = d.id;
-      eq.date = today;
-      return true;
-    }
-    const errData = await res.json();
-    console.error('保存エラー:', errData);
-    return false;
+    return res.ok;
   } catch(e) {
-    console.error('保存例外:', e);
+    console.error('保存エラー:', e);
     return false;
   }
 }
@@ -432,7 +375,6 @@ function showSync() {
   setTimeout(() => bar.classList.remove('show'), 3000);
 }
 
-// ===== UI =====
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -445,15 +387,15 @@ function renderGrid(data) {
   const g = document.getElementById('grid');
   document.getElementById('countChip').innerHTML = `<b>${data.length}</b> / ${db.length} 件`;
   if (!data.length) {
-    g.innerHTML = `<div class="empty"><div class="empty-icon">🏦</div><div style="font-size:13px;color:var(--text-2);margin-bottom:5px;">該当する機器がありません</div><div style="font-size:11px;">新規登録してください</div></div>`;
+    g.innerHTML = `<div class="empty"><div style="font-size:40px;margin-bottom:12px;opacity:.4">🏦</div><div style="font-size:13px;color:var(--text-2);margin-bottom:5px">該当する機器がありません</div><div style="font-size:11px">新規登録してください</div></div>`;
     return;
   }
   g.innerHTML = data.map(eq => `
     <div class="card" id="card-${eq.id}" onclick="selectCard('${eq.id}')">
       <div class="card-top"></div>
-      <div class="card-photo">${eq.photoUrl ? `<img src="${eq.photoUrl}">` : eq.emoji}</div>
+      <div class="card-photo">${eq.emoji}</div>
       <div class="card-body">
-        <div class="card-row1"><div class="card-name">${eq.name}</div></div>
+        <div class="card-name">${eq.name}</div>
         <div class="card-maker">${eq.maker || '—'}</div>
         <div class="tags"><span class="tag tag-bank">${eq.bank}</span>${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}</div>
         <div class="card-desc">${eq.desc || '解説未入力'}</div>
@@ -471,8 +413,8 @@ function selectCard(id) {
   document.getElementById('detEmpty').style.display = 'none';
   document.getElementById('detContent').style.display = 'block';
   document.getElementById('detPhoto').innerHTML = `
-    ${eq.photoUrl ? `<img src="${eq.photoUrl}">` : `<span style="font-size:56px">${eq.emoji}</span>`}
-    <div class="det-strip"><span>ID-${eq.id}</span><span>${eq.date}</span></div>`;
+    <span style="font-size:56px">${eq.emoji}</span>
+    <div class="det-strip"><span>ID-${eq.id.slice(-4)}</span><span>${eq.date}</span></div>`;
   document.getElementById('detTags').innerHTML = `<span class="tag tag-bank">${eq.bank}</span>${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}`;
   document.getElementById('detName').textContent = eq.name;
   document.getElementById('detMaker').textContent = eq.maker || '';
@@ -499,19 +441,6 @@ function applyFilters() {
   renderGrid(db.filter(e => (!bank || e.bank === bank) && (!branch || e.branch === branch) && (!search || e.name.toLowerCase().includes(search))));
 }
 
-function prevPhoto(input) {
-  if (input.files && input.files[0]) {
-    photoFile = input.files[0];
-    const r = new FileReader();
-    r.onload = e => {
-      document.getElementById('upPrev').src = e.target.result;
-      document.getElementById('upPrev').style.display = 'block';
-      ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = 'none');
-    };
-    r.readAsDataURL(input.files[0]);
-  }
-}
-
 async function genAI() {
   const name = document.getElementById('iName').value.trim();
   if (!name) { alert('機器名称を入力してください。'); return; }
@@ -524,17 +453,14 @@ async function genAI() {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        model: "claude-sonnet-4-20250514",
-        max_tokens: 1000,
-        messages: [{ role: "user", content: `金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker ? `メーカー：${maker}。` : ''}${bank ? `設置先：${bank}。` : ''}\n含める内容：①用途・機能 ②設置場所 ③内装工事時の注意点\n解説文のみ返答してください。` }]
+        model: "claude-sonnet-4-20250514", max_tokens: 1000,
+        messages: [{ role: "user", content: `金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker?`メーカー：${maker}。`:''}${bank?`設置先：${bank}。`:''}\n含める内容：①用途・機能 ②設置場所 ③内装工事時の注意点\n解説文のみ返答してください。` }]
       })
     });
     const data = await res.json();
     document.getElementById('iDesc').value = data.content?.find(c => c.type === 'text')?.text?.trim() || '';
     aiUsed = true;
-  } catch {
-    document.getElementById('iDesc').value = `${name}は金融機関の窓口業務に使用される機器です。`;
-  }
+  } catch { document.getElementById('iDesc').value = `${name}は金融機関の窓口業務に使用される機器です。`; }
   document.getElementById('aiLoading').style.display = 'none';
 }
 
@@ -545,45 +471,40 @@ async function registerEq() {
   const btn = document.getElementById('submitBtn');
   btn.disabled = true; btn.textContent = '保存中...';
   const eq = {
+    id: String(Date.now()),
     name, maker: document.getElementById('iMaker').value.trim(),
     bank, branch: document.getElementById('iBranch').value.trim(),
     desc: document.getElementById('iDesc').value.trim(),
-    photoUrl: null, emoji: '📦'
+    date: new Date().toISOString().slice(0, 10),
+    emoji: '📦'
   };
-  const saved = await saveItem(eq);
+  const saved = await saveRow(eq);
   btn.disabled = false; btn.textContent = '登 録 す る';
   if (saved) {
     db.unshift(eq);
     ['iName','iMaker','iBank','iBranch','iDesc'].forEach(i => document.getElementById(i).value = '');
-    document.getElementById('upPrev').style.display = 'none';
-    ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = '');
-    document.getElementById('aiBtn').style.display = '';
-    photoFile = null; aiUsed = false;
+    aiUsed = false;
     const msg = document.getElementById('msgOk');
     msg.style.display = 'block';
     setTimeout(() => msg.style.display = 'none', 4000);
     buildFilters(); applyFilters(); showSync();
     setTimeout(() => selectCard(eq.id), 100);
   } else {
-    const err = document.getElementById('msgErr');
-    err.textContent = '保存に失敗しました。もう一度お試しください。';
-    err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 5000);
+    showErr('msgErr', '保存に失敗しました。もう一度お試しください。');
+    document.getElementById('msgErr').style.display = 'block';
+    setTimeout(() => document.getElementById('msgErr').style.display = 'none', 5000);
   }
 }
 
-// ===== 起動処理 =====
-msal_app.handleRedirectPromise().then(async (result) => {
-  const account = msal_app.getAllAccounts()[0];
+msalApp.handleRedirectPromise().then(async () => {
+  const account = msalApp.getAllAccounts()[0];
   if (account) {
     initUser(account);
     await loadData();
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
   }
-}).catch(e => {
-  console.error('起動エラー:', e);
-});
+}).catch(e => console.error('起動エラー:', e));
 </script>
 </body>
 </html>
