@@ -7,151 +7,128 @@
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://alcdn.msauth.net/browser/2.38.0/js/msal-browser.min.js"></script>
 <style>
-:root {
-  --bg:#f5f2ec;--bg-card:#ffffff;--bg-panel:#f0ece4;
-  --border:#ddd8ce;--border-md:#c8c2b6;
-  --text-1:#1a1714;--text-2:#5a5450;--text-3:#9a948c;
-  --accent:#1a1714;--accent2:#d94f3a;--accent3:#4a7c6f;
-  --gold:#c9993a;--white:#ffffff;
-  --shadow-sm:0 1px 4px rgba(0,0,0,0.06);
-  --shadow-md:0 4px 20px rgba(0,0,0,0.08);
-  --shadow-lg:0 12px 48px rgba(0,0,0,0.12);
-}
+:root{--bg:#f5f2ec;--bg-card:#fff;--bg-panel:#f0ece4;--border:#ddd8ce;--border-md:#c8c2b6;--text-1:#1a1714;--text-2:#5a5450;--text-3:#9a948c;--accent:#1a1714;--accent2:#d94f3a;--accent3:#4a7c6f;--white:#fff;--shadow-sm:0 1px 4px rgba(0,0,0,.06);--shadow-md:0 4px 20px rgba(0,0,0,.08);--shadow-lg:0 12px 48px rgba(0,0,0,.12);}
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Noto Sans JP',sans-serif;background:var(--bg);color:var(--text-1);min-height:100vh;}
-
 /* LOGIN */
 #loginScreen{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;}
 .login-card{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:44px 40px 36px;width:360px;box-shadow:var(--shadow-lg);text-align:center;}
 .login-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:24px;}
-.login-logo-mark{width:38px;height:38px;}
 .login-company{font-size:14px;font-weight:900;color:var(--text-1);text-align:left;line-height:1.3;}
-.login-company-sub{font-size:9px;color:var(--text-3);letter-spacing:0.04em;}
+.login-company-sub{font-size:9px;color:var(--text-3);letter-spacing:.04em;}
 .login-divider{width:100%;height:1px;background:var(--border);margin-bottom:24px;}
-.login-title{font-size:16px;font-weight:700;color:var(--text-1);margin-bottom:6px;}
+.login-title{font-size:16px;font-weight:700;margin-bottom:6px;}
 .login-sub{font-size:11px;color:var(--text-3);margin-bottom:28px;line-height:1.7;}
-.ms-login-btn{width:100%;padding:13px 16px;background:var(--accent);color:var(--white);border:none;border-radius:7px;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:700;letter-spacing:0.06em;cursor:pointer;transition:background 0.15s;display:flex;align-items:center;justify-content:center;gap:10px;}
-.ms-login-btn:hover{background:#2d2a26;}
-.ms-icon{width:18px;height:18px;flex-shrink:0;}
-.login-loading{display:none;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-3);margin-top:14px;letter-spacing:0.1em;}
+.ms-btn{width:100%;padding:13px;background:var(--accent);color:var(--white);border:none;border-radius:7px;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;transition:background .15s;}
+.ms-btn:hover{background:#2d2a26;}
+.ms-icon{width:18px;height:18px;}
+.login-loading{display:none;font-family:'DM Mono',monospace;font-size:11px;color:var(--text-3);margin-top:14px;}
+.login-err{display:none;font-size:11px;color:var(--accent2);margin-top:10px;padding:8px;background:rgba(217,79,58,.08);border-radius:5px;}
 .login-note{font-size:10px;color:var(--text-3);margin-top:16px;line-height:1.7;}
-
 /* APP */
 #app{display:none;}
-.sync-bar{padding:5px 20px;background:rgba(74,124,111,0.08);border-bottom:1px solid rgba(74,124,111,0.15);font-family:'DM Mono',monospace;font-size:9px;color:var(--accent3);letter-spacing:0.1em;display:none;align-items:center;gap:6px;}
+.sync-bar{padding:5px 20px;background:rgba(74,124,111,.08);border-bottom:1px solid rgba(74,124,111,.15);font-family:'DM Mono',monospace;font-size:9px;color:var(--accent3);letter-spacing:.1em;display:none;align-items:center;gap:6px;}
 .sync-bar.show{display:flex;}
-
-/* HEADER */
 header{background:var(--white);border-bottom:2px solid var(--border);height:58px;display:flex;align-items:center;padding:0 24px;position:sticky;top:0;z-index:50;box-shadow:var(--shadow-sm);}
 .logo-wrap{display:flex;align-items:center;gap:10px;}
-.logo-mark{width:30px;height:30px;flex-shrink:0;}
-.logo-company{font-size:13px;font-weight:900;color:var(--text-1);letter-spacing:0.02em;line-height:1.2;}
-.logo-sub{font-size:9px;font-weight:400;color:var(--text-3);letter-spacing:0.04em;}
+.logo-company{font-size:13px;font-weight:900;line-height:1.2;}
+.logo-sub{font-size:9px;color:var(--text-3);letter-spacing:.04em;}
 .hd{width:1px;height:26px;background:var(--border);margin:0 18px;}
-.system-title{font-size:14px;font-weight:700;color:var(--text-1);letter-spacing:0.04em;}
-.system-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.15em;text-transform:uppercase;margin-top:1px;}
-.header-spacer{flex:1;}
+.sys-title{font-size:14px;font-weight:700;letter-spacing:.04em;}
+.sys-sub{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:.15em;text-transform:uppercase;margin-top:1px;}
+.hsp{flex:1;}
 .user-pill{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-2);margin-right:12px;}
-.user-avatar{width:24px;height:24px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--white);font-weight:700;}
-.online-pill{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.12em;padding:4px 10px;border:1px solid var(--border);border-radius:20px;margin-right:12px;}
-.online-dot{width:5px;height:5px;background:#3d9970;border-radius:50%;box-shadow:0 0 5px #3d9970;animation:blink 2.5s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-.logout-btn{padding:6px 14px;background:transparent;border:1px solid var(--border-md);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-3);cursor:pointer;letter-spacing:0.08em;transition:all 0.15s;}
+.avatar{width:24px;height:24px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--white);font-weight:700;}
+.online-pill{display:flex;align-items:center;gap:5px;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);padding:4px 10px;border:1px solid var(--border);border-radius:20px;margin-right:12px;}
+.dot{width:5px;height:5px;background:#3d9970;border-radius:50%;animation:blink 2.5s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.logout-btn{padding:6px 14px;background:transparent;border:1px solid var(--border-md);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-3);cursor:pointer;transition:all .15s;}
 .logout-btn:hover{border-color:var(--accent2);color:var(--accent2);}
-
 /* LAYOUT */
-.layout{display:grid;grid-template-columns:1fr 360px;gap:0;min-height:calc(100vh - 58px);}
-.pane-list{padding:20px;border-right:1px solid var(--border);overflow-y:auto;}
+.layout{display:grid;grid-template-columns:1fr 360px;min-height:calc(100vh - 58px);}
+.pane-list{padding:20px;border-right:1px solid var(--border);}
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap;}
-.toolbar-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.2em;text-transform:uppercase;padding-right:10px;border-right:1px solid var(--border);margin-right:2px;white-space:nowrap;}
-.tb-select{padding:6px 24px 6px 10px;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5' viewBox='0 0 8 5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%239a948c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);appearance:none;cursor:pointer;}
-.tb-select:focus{outline:none;border-color:var(--accent);}
-.tb-search{flex:1;min-width:140px;max-width:220px;padding:6px 10px;background:var(--white);border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);}
-.tb-search::placeholder{color:var(--text-3);}
+.tb-label{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:.2em;text-transform:uppercase;padding-right:10px;border-right:1px solid var(--border);white-space:nowrap;}
+.tb-sel{padding:6px 24px 6px 10px;background:var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='5'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%239a948c' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E") no-repeat right 8px center;border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;appearance:none;cursor:pointer;}
+.tb-sel:focus{outline:none;border-color:var(--accent);}
+.tb-search{flex:1;min-width:140px;max-width:220px;padding:6px 10px;background:var(--white);border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;}
 .tb-search:focus{outline:none;border-color:var(--accent);}
-.count-chip{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-2);padding:5px 10px;background:var(--bg-panel);border:1px solid var(--border);border-radius:5px;margin-left:auto;white-space:nowrap;}
-.count-chip b{color:var(--text-1);}
+.count{font-family:'DM Mono',monospace;font-size:11px;color:var(--text-2);padding:5px 10px;background:var(--bg-panel);border:1px solid var(--border);border-radius:5px;margin-left:auto;white-space:nowrap;}
+.count b{color:var(--text-1);}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all 0.2s;box-shadow:var(--shadow-sm);}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:8px;overflow:hidden;cursor:pointer;transition:all .2s;box-shadow:var(--shadow-sm);}
 .card:hover{border-color:var(--border-md);transform:translateY(-2px);box-shadow:var(--shadow-md);}
-.card.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(26,23,20,0.12);}
-.card-top{height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform 0.2s;}
+.card.selected{border-color:var(--accent);box-shadow:0 0 0 2px rgba(26,23,20,.12);}
+.card-top{height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .2s;}
 .card:hover .card-top,.card.selected .card-top{transform:scaleX(1);}
 .card-photo{width:100%;height:140px;background:var(--bg-panel);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:44px;overflow:hidden;}
 .card-photo img{width:100%;height:100%;object-fit:cover;}
 .card-body{padding:11px 13px 10px;}
 .card-row1{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:5px;}
-.card-name{font-size:13px;font-weight:700;color:var(--text-1);line-height:1.4;flex:1;padding-right:6px;}
-.badge-ai{font-family:'DM Mono',monospace;font-size:8px;padding:2px 5px;background:rgba(217,79,58,0.08);border:1px solid rgba(217,79,58,0.2);border-radius:3px;color:var(--accent2);letter-spacing:0.08em;white-space:nowrap;flex-shrink:0;}
+.card-name{font-size:13px;font-weight:700;line-height:1.4;flex:1;padding-right:6px;}
+.badge-ai{font-family:'DM Mono',monospace;font-size:8px;padding:2px 5px;background:rgba(217,79,58,.08);border:1px solid rgba(217,79,58,.2);border-radius:3px;color:var(--accent2);}
 .card-maker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:8px;}
 .tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:8px;}
 .tag{font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;}
-.tag-bank{background:rgba(74,124,111,0.1);border:1px solid rgba(74,124,111,0.2);color:var(--accent3);}
+.tag-bank{background:rgba(74,124,111,.1);border:1px solid rgba(74,124,111,.2);color:var(--accent3);}
 .tag-branch{background:var(--bg-panel);border:1px solid var(--border);color:var(--text-2);}
 .card-desc{font-size:11px;color:var(--text-2);line-height:1.7;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .card-footer{padding:8px 13px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
 .card-date{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);}
-.card-open{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);background:none;border:none;cursor:pointer;letter-spacing:0.1em;padding:0;}
-.card:hover .card-open,.card.selected .card-open{color:var(--text-1);}
-
 /* RIGHT PANE */
 .pane-right{background:var(--white);display:flex;flex-direction:column;position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;}
 .tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;}
-.tab-btn{flex:1;padding:12px 0;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;letter-spacing:0.04em;background:transparent;border:none;cursor:pointer;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all 0.15s;}
+.tab-btn{flex:1;padding:12px 0;font-size:12px;font-weight:700;font-family:'Noto Sans JP',sans-serif;background:transparent;border:none;cursor:pointer;color:var(--text-3);border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s;}
 .tab-btn.active{color:var(--text-1);border-bottom-color:var(--accent);}
 .tab-btn:hover:not(.active){color:var(--text-2);background:var(--bg);}
-.tab-content{display:none;flex:1;overflow-y:auto;}
+.tab-content{display:none;}
 .tab-content.active{display:block;}
 .det-photo{width:100%;height:200px;background:var(--bg-panel);display:flex;align-items:center;justify-content:center;font-size:60px;overflow:hidden;position:relative;border-bottom:1px solid var(--border);}
 .det-photo img{width:100%;height:100%;object-fit:cover;}
-.det-id-strip{position:absolute;bottom:0;left:0;right:0;padding:5px 14px;background:rgba(245,242,236,0.95);display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.1em;border-top:1px solid var(--border);}
+.det-strip{position:absolute;bottom:0;left:0;right:0;padding:5px 14px;background:rgba(245,242,236,.95);display:flex;justify-content:space-between;font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);border-top:1px solid var(--border);}
 .det-body{padding:16px 18px;}
 .det-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px;}
-.det-name{font-size:18px;font-weight:900;color:var(--text-1);margin-bottom:4px;line-height:1.3;}
+.det-name{font-size:18px;font-weight:900;margin-bottom:4px;line-height:1.3;}
 .det-maker{font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-bottom:14px;}
-.det-sec{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:7px;}
+.det-sec{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:.2em;text-transform:uppercase;margin-bottom:7px;}
 .det-desc{font-size:12px;color:var(--text-2);line-height:1.85;}
-.det-ai{font-family:'DM Mono',monospace;font-size:10px;color:var(--accent2);margin-bottom:10px;display:flex;align-items:center;gap:4px;}
-.det-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:40px 20px;text-align:center;color:var(--text-3);}
-.det-empty-icon{font-size:40px;margin-bottom:12px;opacity:0.3;}
-.det-empty-text{font-size:13px;color:var(--text-2);margin-bottom:6px;}
-.det-empty-sub{font-size:11px;}
+.det-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;text-align:center;color:var(--text-3);}
+.det-empty-icon{font-size:40px;margin-bottom:12px;opacity:.3;}
+/* FORM */
 .form-wrap{padding:16px 18px;}
 .fsec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--border);}
 .fsec:last-of-type{border-bottom:none;}
-.fsec-title{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:10px;}
+.fsec-title{font-family:'DM Mono',monospace;font-size:9px;color:var(--text-3);letter-spacing:.2em;text-transform:uppercase;margin-bottom:10px;}
 .frow{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
 .fg{margin-bottom:8px;}
-.fg:last-child{margin-bottom:0;}
 .fl{display:block;font-size:11px;font-weight:500;color:var(--text-2);margin-bottom:3px;}
-.fl .req{color:var(--accent2);margin-left:2px;}
-.fi,.fta{width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);transition:border-color 0.15s;}
+.req{color:var(--accent2);margin-left:2px;}
+.fi,.fta{width:100%;padding:8px 10px;background:var(--bg);border:1px solid var(--border);border-radius:5px;font-size:12px;font-family:'Noto Sans JP',sans-serif;color:var(--text-1);transition:border-color .15s;}
 .fi::placeholder,.fta::placeholder{color:var(--text-3);}
 .fi:focus,.fta:focus{outline:none;border-color:var(--accent);background:var(--white);}
 .fta{resize:vertical;min-height:80px;line-height:1.7;}
-.upload-zone{border:1.5px dashed var(--border-md);border-radius:6px;padding:16px;text-align:center;cursor:pointer;position:relative;background:var(--bg);transition:all 0.15s;}
-.upload-zone:hover{border-color:var(--accent);background:var(--bg-panel);}
-.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
-.upload-zone-icon{font-size:20px;margin-bottom:4px;}
-.upload-zone-text{font-size:11px;color:var(--text-2);}
-.upload-zone-sub{font-size:10px;color:var(--text-3);margin-top:2px;}
-.upload-preview{width:100%;max-height:120px;object-fit:cover;border-radius:5px;margin-top:8px;display:none;}
-.ai-btn{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:6px 12px;background:rgba(217,79,58,0.06);border:1px solid rgba(217,79,58,0.18);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--accent2);cursor:pointer;letter-spacing:0.06em;transition:all 0.15s;}
-.ai-btn:hover{background:rgba(217,79,58,0.1);}
+.upload-zone{border:1.5px dashed var(--border-md);border-radius:6px;padding:16px;text-align:center;cursor:pointer;position:relative;background:var(--bg);transition:all .15s;}
+.upload-zone:hover{border-color:var(--accent);}
+.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;}
+.up-icon{font-size:20px;margin-bottom:4px;}
+.up-text{font-size:11px;color:var(--text-2);}
+.up-sub{font-size:10px;color:var(--text-3);margin-top:2px;}
+.up-prev{width:100%;max-height:120px;object-fit:cover;border-radius:5px;margin-top:8px;display:none;}
+.ai-btn{display:inline-flex;align-items:center;gap:5px;margin-top:6px;padding:6px 12px;background:rgba(217,79,58,.06);border:1px solid rgba(217,79,58,.18);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--accent2);cursor:pointer;transition:all .15s;}
+.ai-btn:hover{background:rgba(217,79,58,.1);}
 .ai-loading{display:none;font-family:'DM Mono',monospace;font-size:10px;color:var(--text-3);margin-top:5px;}
-.btn-submit{width:100%;padding:11px;background:var(--accent);color:var(--white);border:none;border-radius:6px;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:700;letter-spacing:0.06em;cursor:pointer;margin-top:4px;transition:background 0.15s;}
+.btn-submit{width:100%;padding:11px;background:var(--accent);color:var(--white);border:none;border-radius:6px;font-size:13px;font-family:'Noto Sans JP',sans-serif;font-weight:700;cursor:pointer;margin-top:4px;transition:background .15s;}
 .btn-submit:hover{background:#2d2a26;}
 .btn-submit:disabled{background:#9a948c;cursor:not-allowed;}
-.success-msg{display:none;padding:10px 14px;margin-bottom:12px;background:rgba(74,124,111,0.1);border:1px solid rgba(74,124,111,0.25);border-radius:6px;font-size:12px;color:var(--accent3);font-weight:500;}
-.error-msg{display:none;padding:10px 14px;margin-bottom:12px;background:rgba(217,79,58,0.08);border:1px solid rgba(217,79,58,0.2);border-radius:6px;font-size:12px;color:var(--accent2);}
+.msg{display:none;padding:10px 14px;margin-bottom:12px;border-radius:6px;font-size:12px;font-weight:500;}
+.msg-ok{background:rgba(74,124,111,.1);border:1px solid rgba(74,124,111,.25);color:var(--accent3);}
+.msg-err{background:rgba(217,79,58,.08);border:1px solid rgba(217,79,58,.2);color:var(--accent2);}
 .empty{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--text-3);}
 .empty-icon{font-size:40px;margin-bottom:12px;opacity:.4;}
-.empty-text{font-size:13px;margin-bottom:5px;color:var(--text-2);}
-.empty-sub{font-size:11px;}
-.pdf-bar{padding:10px 20px;border-top:1px solid var(--border);background:var(--white);flex-shrink:0;}
-.btn-pdf{width:100%;padding:8px;background:transparent;border:1px solid var(--border-md);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-2);letter-spacing:0.08em;cursor:pointer;transition:all 0.15s;display:flex;align-items:center;justify-content:center;gap:5px;}
-.btn-pdf:hover{border-color:var(--gold);color:var(--gold);}
-@media print{header,.pane-right,.toolbar{display:none !important;}.layout{display:block;}body{background:white;}.grid{grid-template-columns:repeat(3,1fr);}.card{break-inside:avoid;box-shadow:none;}}
+.pdf-bar{padding:10px 20px;border-top:1px solid var(--border);background:var(--white);}
+.btn-pdf{width:100%;padding:8px;background:transparent;border:1px solid var(--border-md);border-radius:5px;font-size:11px;font-family:'DM Mono',monospace;color:var(--text-2);cursor:pointer;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:5px;}
+.btn-pdf:hover{border-color:#c9993a;color:#c9993a;}
+@media print{header,.pane-right,.toolbar{display:none!important;}.layout{display:block;}.grid{grid-template-columns:repeat(3,1fr);}.card{break-inside:avoid;box-shadow:none;}}
 </style>
 </head>
 <body>
@@ -160,10 +137,10 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 <div id="loginScreen">
   <div class="login-card">
     <div class="login-logo">
-      <svg class="login-logo-mark" viewBox="0 0 38 38" fill="none">
-        <path d="M6 32 L16 6" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
-        <path d="M20 6 L20 32" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
-        <path d="M20 6 Q33 6 33 19 Q33 32 20 32" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round" fill="none"/>
+      <svg width="38" height="38" viewBox="0 0 38 38" fill="none">
+        <path d="M6 32L16 6" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 6L20 32" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round"/>
+        <path d="M20 6Q33 6 33 19Q33 32 20 32" stroke="#1a1714" stroke-width="3.8" stroke-linecap="round" fill="none"/>
       </svg>
       <div>
         <div class="login-company">株式会社 システムデザイン</div>
@@ -173,7 +150,7 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
     <div class="login-divider"></div>
     <div class="login-title">金融機関 設備台帳</div>
     <div class="login-sub">Microsoft 365アカウントでログインしてください。<br>社内メンバー専用システムです。</div>
-    <button class="ms-login-btn" onclick="signIn()">
+    <button class="ms-btn" onclick="signIn()">
       <svg class="ms-icon" viewBox="0 0 21 21" fill="none">
         <rect x="1" y="1" width="9" height="9" fill="#f25022"/>
         <rect x="11" y="1" width="9" height="9" fill="#7fba00"/>
@@ -183,19 +160,20 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
       Microsoft 365 でログイン
     </button>
     <div class="login-loading" id="loginLoading">● 認証中...</div>
+    <div class="login-err" id="loginErr"></div>
     <div class="login-note">社内専用システムです。社外への共有・公開禁止。</div>
   </div>
 </div>
 
 <!-- APP -->
 <div id="app">
-<div class="sync-bar" id="syncBar">● OneDrive と同期済み</div>
+<div class="sync-bar" id="syncBar">● SharePointと同期済み</div>
 <header>
   <div class="logo-wrap">
-    <svg class="logo-mark" viewBox="0 0 30 30" fill="none">
-      <path d="M5 25 L13 5" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
-      <path d="M16 5 L16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
-      <path d="M16 5 Q26 5 26 15 Q26 25 16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round" fill="none"/>
+    <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+      <path d="M5 25L13 5" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M16 5L16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M16 5Q26 5 26 15Q26 25 16 25" stroke="#1a1714" stroke-width="3.2" stroke-linecap="round" fill="none"/>
     </svg>
     <div>
       <div class="logo-company">株式会社 システムデザイン</div>
@@ -204,26 +182,26 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
   </div>
   <div class="hd"></div>
   <div>
-    <div class="system-title">金融機関 設備台帳</div>
-    <div class="system-sub">Financial Equipment Registry</div>
+    <div class="sys-title">金融機関 設備台帳</div>
+    <div class="sys-sub">Financial Equipment Registry</div>
   </div>
-  <div class="header-spacer"></div>
+  <div class="hsp"></div>
   <div class="user-pill">
-    <div class="user-avatar" id="userAvatar">—</div>
+    <div class="avatar" id="userAvatar">—</div>
     <span id="userName">—</span>
   </div>
-  <div class="online-pill"><div class="online-dot"></div>ONLINE</div>
+  <div class="online-pill"><div class="dot"></div>ONLINE</div>
   <button class="logout-btn" onclick="signOut()">ログアウト</button>
 </header>
 
 <div class="layout">
   <div class="pane-list">
     <div class="toolbar">
-      <span class="toolbar-label">FILTER</span>
-      <select class="tb-select" id="filterBank" onchange="applyFilters()"><option value="">すべての金融機関</option></select>
-      <select class="tb-select" id="filterBranch" onchange="applyFilters()"><option value="">すべての支店</option></select>
+      <span class="tb-label">FILTER</span>
+      <select class="tb-sel" id="filterBank" onchange="applyFilters()"><option value="">すべての金融機関</option></select>
+      <select class="tb-sel" id="filterBranch" onchange="applyFilters()"><option value="">すべての支店</option></select>
       <input class="tb-search" type="text" id="filterSearch" placeholder="機器名で検索..." oninput="applyFilters()">
-      <div class="count-chip" id="countChip">— 件</div>
+      <div class="count" id="countChip">— 件</div>
     </div>
     <div class="grid" id="grid"></div>
   </div>
@@ -234,10 +212,10 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
       <button class="tab-btn" id="tabReg" onclick="switchTab('reg')">＋ 新規登録</button>
     </div>
     <div class="tab-content active" id="contentDetail">
-      <div id="detEmpty" class="det-empty">
+      <div class="det-empty" id="detEmpty">
         <div class="det-empty-icon">👆</div>
-        <div class="det-empty-text">左の機器をクリック</div>
-        <div class="det-empty-sub">詳細が表示されます</div>
+        <div style="font-size:13px;color:var(--text-2);margin-bottom:6px;">左の機器をクリック</div>
+        <div style="font-size:11px;">詳細が表示されます</div>
       </div>
       <div id="detContent" style="display:none;">
         <div class="det-photo" id="detPhoto"></div>
@@ -245,7 +223,6 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
           <div class="det-tags" id="detTags"></div>
           <div class="det-name" id="detName"></div>
           <div class="det-maker" id="detMaker"></div>
-          <div id="detAiNote"></div>
           <div class="det-sec">機器解説</div>
           <div class="det-desc" id="detDesc"></div>
         </div>
@@ -253,16 +230,16 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
     </div>
     <div class="tab-content" id="contentReg">
       <div class="form-wrap">
-        <div class="success-msg" id="successMsg">✓ OneDriveに保存しました！</div>
-        <div class="error-msg" id="errorMsg"></div>
+        <div class="msg msg-ok" id="msgOk">✓ SharePointに保存しました！</div>
+        <div class="msg msg-err" id="msgErr"></div>
         <div class="fsec">
           <div class="fsec-title">01 — 写真</div>
           <div class="upload-zone">
             <input type="file" accept="image/*" id="photoInput" onchange="prevPhoto(this)">
-            <div id="upIcon" class="upload-zone-icon">📷</div>
-            <div id="upText" class="upload-zone-text">クリックして写真をアップロード</div>
-            <div id="upSub" class="upload-zone-sub">JPG / PNG / HEIC</div>
-            <img id="upPreview" class="upload-preview">
+            <div id="upIcon" class="up-icon">📷</div>
+            <div id="upText" class="up-text">クリックして写真をアップロード</div>
+            <div id="upSub" class="up-sub">JPG / PNG / HEIC</div>
+            <img id="upPrev" class="up-prev">
           </div>
         </div>
         <div class="fsec">
@@ -296,60 +273,56 @@ header{background:var(--white);border-bottom:2px solid var(--border);height:58px
 </div>
 
 <script>
-// ===== 設定（変更不要） =====
+// ===== 設定 =====
 const CLIENT_ID = 'e7caa6fe-84d9-4fd6-821a-72ff7a9bb989';
 const TENANT_ID = 'a0ce6143-a347-47f4-991d-97b926c598c6';
-const SITE_PATH = '/sites/stdn';
-const FILE_ID = 'E2CF3063-74CE-4A29-8DB7-BF36A4058EE6';
-const EXCEL_ITEM_PATH = `${SITE_PATH}/drive/items/${FILE_ID}`;
-const SHEET = 'Sheet1';
+const SITE_URL = 'systemdesign56.sharepoint.com:/sites/equipment:';
+const LIST_NAME = '設備台帳';
 
 const msalConfig = {
   auth: {
     clientId: CLIENT_ID,
     authority: `https://login.microsoftonline.com/${TENANT_ID}`,
-    redirectUri: window.location.origin + window.location.pathname
+    redirectUri: 'https://systemdesign-sd.github.io/equipment/'
   },
   cache: { cacheLocation: 'sessionStorage' }
 };
-const msalInstance = new msal.PublicClientApplication(msalConfig);
-const scopes = ['Files.ReadWrite', 'Sites.ReadWrite.All', 'User.Read'];
+const msal_app = new msal.PublicClientApplication(msalConfig);
+const SCOPES = ['https://graph.microsoft.com/Sites.ReadWrite.All', 'User.Read'];
 
 let db = [];
 let photoFile = null;
 let aiUsed = false;
+let siteId = null;
+let listId = null;
 
 // ===== 認証 =====
 async function signIn() {
   document.getElementById('loginLoading').style.display = 'block';
+  document.getElementById('loginErr').style.display = 'none';
   try {
-    // まずサイレントログインを試みる
-    const accounts = msalInstance.getAllAccounts();
-    if (accounts.length > 0) {
-      const result = await msalInstance.acquireTokenSilent({ scopes, account: accounts[0] });
-      initUser(accounts[0]);
-      await loadData();
-      document.getElementById('loginScreen').style.display = 'none';
-      document.getElementById('app').style.display = 'block';
-      return;
-    }
-    // 新規ログインはリダイレクト
-    await msalInstance.loginRedirect({ scopes });
+    await msal_app.loginRedirect({ scopes: SCOPES });
   } catch(e) {
     document.getElementById('loginLoading').style.display = 'none';
-    alert('ログインに失敗しました。\n\nエラー: ' + (e.message || e));
+    showLoginErr('ログインに失敗しました: ' + (e.message || e));
   }
 }
 
+function showLoginErr(msg) {
+  const el = document.getElementById('loginErr');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
 async function getToken() {
-  const account = msalInstance.getAllAccounts()[0];
+  const account = msal_app.getAllAccounts()[0];
   if (!account) return null;
   try {
-    const r = await msalInstance.acquireTokenSilent({ scopes, account });
+    const r = await msal_app.acquireTokenSilent({ scopes: SCOPES, account });
     return r.accessToken;
   } catch {
-    const r = await msalInstance.acquireTokenPopup({ scopes });
-    return r.accessToken;
+    const r = await msal_app.acquireTokenRedirect({ scopes: SCOPES });
+    return null;
   }
 }
 
@@ -360,33 +333,54 @@ function initUser(account) {
 }
 
 function signOut() {
-  msalInstance.logoutPopup();
+  msal_app.logoutRedirect();
+}
+
+// ===== SharePoint サイト・リストID取得 =====
+async function getSiteAndListId(token) {
+  // サイトID取得
+  const siteRes = await fetch(`https://graph.microsoft.com/v1.0/sites/${SITE_URL}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const siteData = await siteRes.json();
+  if (!siteData.id) throw new Error('サイトが見つかりません: ' + JSON.stringify(siteData));
+  siteId = siteData.id;
+
+  // リストID取得
+  const listRes = await fetch(`https://graph.microsoft.com/v1.0/sites/${siteId}/lists?$filter=displayName eq '${LIST_NAME}'`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  const listData = await listRes.json();
+  if (!listData.value || listData.value.length === 0) throw new Error('リストが見つかりません');
+  listId = listData.value[0].id;
 }
 
 // ===== データ読み込み =====
 async function loadData() {
   try {
     const token = await getToken();
-    const url = `https://graph.microsoft.com/v1.0/sites/systemdesign56.sharepoint.com:/sites/stdn:/drive/items/${FILE_ID}/workbook/worksheets('${SHEET}')/usedRange`;
-    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
-    if (!res.ok) { buildFilters(); applyFilters(); return; }
+    if (!token) return;
+    await getSiteAndListId(token);
+
+    const res = await fetch(
+      `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items?$expand=fields&$top=500`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
     const data = await res.json();
-    const rows = data.values || [];
-    db = rows.slice(1).filter(r => r[1]).map(r => ({
-      id: String(r[0] || Date.now()),
-      name: r[1] || '',
-      maker: r[2] || '',
-      bank: r[3] || '',
-      branch: r[4] || '',
-      desc: r[5] || '',
-      photoUrl: r[6] || null,
-      date: r[7] || '',
-      ai: r[8] === true || r[8] === 'TRUE' || r[8] === 1,
-      emoji: r[9] || '📦'
+    db = (data.value || []).map(item => ({
+      id: item.id,
+      name: item.fields.Title || '',
+      maker: item.fields.x30e1x30fcx30abx30fc || item.fields['メーカー'] || '',
+      bank: item.fields.x91d1x878dx6a5fx95a2 || item.fields['金融機関'] || '',
+      branch: item.fields.x652fx5e97x540d || item.fields['支店名'] || '',
+      desc: item.fields.x89e3x8aaax6587 || item.fields['解説文'] || '',
+      photoUrl: item.fields.x5199x771fx554ax52b4 || item.fields['写真URL'] || null,
+      date: (item.fields.x767bx9332x65e5 || item.fields['登録日'] || '').slice(0, 10),
+      emoji: '📦'
     }));
     showSync();
   } catch(e) {
-    console.error('読み込みエラー:', e);
+    console.error('データ読み込みエラー:', e);
     db = [];
   }
   buildFilters();
@@ -394,40 +388,42 @@ async function loadData() {
 }
 
 // ===== データ保存 =====
-async function saveRow(eq) {
+async function saveItem(eq) {
   try {
     const token = await getToken();
-    const nextRow = db.length + 2; // ヘッダー1行 + 既存データ + 新規
-    const range = `A${nextRow}:J${nextRow}`;
-    const url = `https://graph.microsoft.com/v1.0/sites/systemdesign56.sharepoint.com:/sites/stdn:/drive/items/${FILE_ID}/workbook/worksheets('${SHEET}')/range(address='${range}')`;
-    const res = await fetch(url, {
-      method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ values: [[eq.id, eq.name, eq.maker, eq.bank, eq.branch, eq.desc, eq.photoUrl || '', eq.date, eq.ai, eq.emoji]] })
-    });
-    return res.ok;
+    if (!token) return false;
+    const today = new Date().toISOString().slice(0, 10);
+    const res = await fetch(
+      `https://graph.microsoft.com/v1.0/sites/${siteId}/lists/${listId}/items`,
+      {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          fields: {
+            Title: eq.name,
+            'メーカー': eq.maker,
+            '金融機関': eq.bank,
+            '支店名': eq.branch,
+            '解説文': eq.desc,
+            '写真URL': eq.photoUrl || '',
+            '登録日': today
+          }
+        })
+      }
+    );
+    if (res.ok) {
+      const d = await res.json();
+      eq.id = d.id;
+      eq.date = today;
+      return true;
+    }
+    const errData = await res.json();
+    console.error('保存エラー:', errData);
+    return false;
   } catch(e) {
-    console.error('保存エラー:', e);
+    console.error('保存例外:', e);
     return false;
   }
-}
-
-// ===== 写真アップロード =====
-async function uploadPhoto(file, id) {
-  try {
-    const token = await getToken();
-    const ext = file.name.split('.').pop();
-    const name = `${id}.${ext}`;
-    const path = `${SITE_PATH}/Shared%20Documents/SP%E5%85%B1%E6%9C%89%E3%83%95%E3%82%A9%E3%83%AB%E3%83%80/%E8%A8%AD%E5%82%99%E5%8F%B0%E5%B8%B3/%E5%86%99%E7%9C%9F/${name}`;
-    const url = `https://graph.microsoft.com/v1.0${path}:/content`;
-    const res = await fetch(url, {
-      method: 'PUT',
-      headers: { Authorization: `Bearer ${token}`, 'Content-Type': file.type },
-      body: file
-    });
-    if (res.ok) { const d = await res.json(); return d.webUrl || null; }
-    return null;
-  } catch { return null; }
 }
 
 function showSync() {
@@ -440,16 +436,16 @@ function showSync() {
 function switchTab(tab) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-  const t = tab.charAt(0).toUpperCase() + tab.slice(1);
-  document.getElementById('tab' + t).classList.add('active');
-  document.getElementById('content' + t).classList.add('active');
+  const T = tab.charAt(0).toUpperCase() + tab.slice(1);
+  document.getElementById('tab' + T).classList.add('active');
+  document.getElementById('content' + T).classList.add('active');
 }
 
 function renderGrid(data) {
   const g = document.getElementById('grid');
   document.getElementById('countChip').innerHTML = `<b>${data.length}</b> / ${db.length} 件`;
   if (!data.length) {
-    g.innerHTML = `<div class="empty"><div class="empty-icon">🏦</div><div class="empty-text">該当する機器がありません</div><div class="empty-sub">新規登録してください</div></div>`;
+    g.innerHTML = `<div class="empty"><div class="empty-icon">🏦</div><div style="font-size:13px;color:var(--text-2);margin-bottom:5px;">該当する機器がありません</div><div style="font-size:11px;">新規登録してください</div></div>`;
     return;
   }
   g.innerHTML = data.map(eq => `
@@ -457,28 +453,29 @@ function renderGrid(data) {
       <div class="card-top"></div>
       <div class="card-photo">${eq.photoUrl ? `<img src="${eq.photoUrl}">` : eq.emoji}</div>
       <div class="card-body">
-        <div class="card-row1"><div class="card-name">${eq.name}</div>${eq.ai ? `<span class="badge-ai">AI</span>` : ''}</div>
+        <div class="card-row1"><div class="card-name">${eq.name}</div></div>
         <div class="card-maker">${eq.maker || '—'}</div>
         <div class="tags"><span class="tag tag-bank">${eq.bank}</span>${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}</div>
         <div class="card-desc">${eq.desc || '解説未入力'}</div>
       </div>
-      <div class="card-footer"><span class="card-date">登録 ${eq.date}</span><span class="card-open">詳細 →</span></div>
+      <div class="card-footer"><span class="card-date">登録 ${eq.date}</span></div>
     </div>`).join('');
 }
 
 function selectCard(id) {
-  const eq = db.find(e => e.id === id); if (!eq) return;
+  const eq = db.find(e => e.id === id);
+  if (!eq) return;
   document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-  const el = document.getElementById('card-' + id); if (el) el.classList.add('selected');
+  const el = document.getElementById('card-' + id);
+  if (el) el.classList.add('selected');
   document.getElementById('detEmpty').style.display = 'none';
   document.getElementById('detContent').style.display = 'block';
   document.getElementById('detPhoto').innerHTML = `
     ${eq.photoUrl ? `<img src="${eq.photoUrl}">` : `<span style="font-size:56px">${eq.emoji}</span>`}
-    <div class="det-id-strip"><span>ID-${eq.id.toString().slice(-4)}</span><span>${eq.date}</span></div>`;
+    <div class="det-strip"><span>ID-${eq.id}</span><span>${eq.date}</span></div>`;
   document.getElementById('detTags').innerHTML = `<span class="tag tag-bank">${eq.bank}</span>${eq.branch ? `<span class="tag tag-branch">${eq.branch}</span>` : ''}`;
   document.getElementById('detName').textContent = eq.name;
   document.getElementById('detMaker').textContent = eq.maker || '';
-  document.getElementById('detAiNote').innerHTML = eq.ai ? `<div class="det-ai">✦ AI自動生成解説</div>` : '';
   document.getElementById('detDesc').textContent = eq.desc || '解説未入力';
   switchTab('detail');
 }
@@ -499,7 +496,7 @@ function applyFilters() {
   branches.forEach(b => { const o = document.createElement('option'); o.value = b; o.textContent = b; if (b === curBr) o.selected = true; brs.appendChild(o); });
   const search = document.getElementById('filterSearch').value.toLowerCase();
   const branch = brs.value;
-  renderGrid(db.filter(e => (!bank || e.bank === bank) && (!branch || e.branch === branch) && (!search || e.name.toLowerCase().includes(search) || (e.desc || '').toLowerCase().includes(search))));
+  renderGrid(db.filter(e => (!bank || e.bank === bank) && (!branch || e.branch === branch) && (!search || e.name.toLowerCase().includes(search))));
 }
 
 function prevPhoto(input) {
@@ -507,8 +504,8 @@ function prevPhoto(input) {
     photoFile = input.files[0];
     const r = new FileReader();
     r.onload = e => {
-      document.getElementById('upPreview').src = e.target.result;
-      document.getElementById('upPreview').style.display = 'block';
+      document.getElementById('upPrev').src = e.target.result;
+      document.getElementById('upPrev').style.display = 'block';
       ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = 'none');
     };
     r.readAsDataURL(input.files[0]);
@@ -523,16 +520,21 @@ async function genAI() {
   document.getElementById('aiLoading').style.display = 'block';
   document.getElementById('aiBtn').style.display = 'none';
   try {
-    const prompt = `金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker ? `メーカー：${maker}。` : ''}${bank ? `設置先：${bank}。` : ''}\n含める内容：①用途・機能 ②設置場所 ③内装工事時の注意点\n解説文のみ返答してください。`;
     const res = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ model: "claude-sonnet-4-20250514", max_tokens: 1000, messages: [{ role: "user", content: prompt }] })
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        messages: [{ role: "user", content: `金融機関の内装工事会社向けに「${name}」の設備解説文を150〜200字で作成してください。${maker ? `メーカー：${maker}。` : ''}${bank ? `設置先：${bank}。` : ''}\n含める内容：①用途・機能 ②設置場所 ③内装工事時の注意点\n解説文のみ返答してください。` }]
+      })
     });
     const data = await res.json();
     document.getElementById('iDesc').value = data.content?.find(c => c.type === 'text')?.text?.trim() || '';
     aiUsed = true;
-  } catch { document.getElementById('iDesc').value = `${name}は金融機関の窓口業務に使用される機器です。`; }
+  } catch {
+    document.getElementById('iDesc').value = `${name}は金融機関の窓口業務に使用される機器です。`;
+  }
   document.getElementById('aiLoading').style.display = 'none';
 }
 
@@ -542,40 +544,46 @@ async function registerEq() {
   if (!name || !bank) { alert('機器名称と金融機関は必須です。'); return; }
   const btn = document.getElementById('submitBtn');
   btn.disabled = true; btn.textContent = '保存中...';
-  const id = String(Date.now());
-  let photoUrl = null;
-  if (photoFile) photoUrl = await uploadPhoto(photoFile, id);
-  const newEq = { id, name, maker: document.getElementById('iMaker').value.trim(), bank, branch: document.getElementById('iBranch').value.trim(), desc: document.getElementById('iDesc').value.trim(), photoUrl, date: new Date().toISOString().slice(0,10), ai: aiUsed, emoji: '📦' };
-  const saved = await saveRow(newEq);
+  const eq = {
+    name, maker: document.getElementById('iMaker').value.trim(),
+    bank, branch: document.getElementById('iBranch').value.trim(),
+    desc: document.getElementById('iDesc').value.trim(),
+    photoUrl: null, emoji: '📦'
+  };
+  const saved = await saveItem(eq);
   btn.disabled = false; btn.textContent = '登 録 す る';
   if (saved) {
-    db.unshift(newEq);
+    db.unshift(eq);
     ['iName','iMaker','iBank','iBranch','iDesc'].forEach(i => document.getElementById(i).value = '');
-    document.getElementById('upPreview').style.display = 'none';
+    document.getElementById('upPrev').style.display = 'none';
     ['upIcon','upText','upSub'].forEach(i => document.getElementById(i).style.display = '');
     document.getElementById('aiBtn').style.display = '';
     photoFile = null; aiUsed = false;
-    const msg = document.getElementById('successMsg'); msg.style.display = 'block';
+    const msg = document.getElementById('msgOk');
+    msg.style.display = 'block';
     setTimeout(() => msg.style.display = 'none', 4000);
     buildFilters(); applyFilters(); showSync();
-    setTimeout(() => selectCard(newEq.id), 100);
+    setTimeout(() => selectCard(eq.id), 100);
   } else {
-    const err = document.getElementById('errorMsg');
+    const err = document.getElementById('msgErr');
     err.textContent = '保存に失敗しました。もう一度お試しください。';
     err.style.display = 'block';
-    setTimeout(() => err.style.display = 'none', 4000);
+    setTimeout(() => err.style.display = 'none', 5000);
   }
 }
 
-msalInstance.handleRedirectPromise().then(async (result) => {
-  const account = msalInstance.getAllAccounts()[0];
+// ===== 起動処理 =====
+msal_app.handleRedirectPromise().then(async (result) => {
+  const account = msal_app.getAllAccounts()[0];
   if (account) {
     initUser(account);
     await loadData();
     document.getElementById('loginScreen').style.display = 'none';
     document.getElementById('app').style.display = 'block';
   }
-}).catch((e) => { console.error(e); });
+}).catch(e => {
+  console.error('起動エラー:', e);
+});
 </script>
 </body>
 </html>
